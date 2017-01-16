@@ -1,0 +1,17 @@
+﻿  TitleScene.cpp
+  TextureShaderClass.cpp
+c:\users\ohs45019\documents\hal\就職作品\final_project\textureshaderclass.cpp(444): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\ohs45019\documents\hal\就職作品\final_project\textureshaderclass.cpp(445): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  SystemClass.cpp
+  ShaderManagerClass.cpp
+  SceneManager.cpp
+  main.cpp
+  GameScene.cpp
+c:\users\ohs45019\documents\hal\就職作品\final_project\gamescene.cpp(77): warning C4101: 'result': unreferenced local variable
+  GameObjectBase.cpp
+  GameClearScene.cpp
+c:\users\ohs45019\documents\hal\就職作品\final_project\gameclearscene.cpp(76): warning C4101: 'result': unreferenced local variable
+  ColorShaderClass.cpp
+  Generating Code...
+  Final_Project.vcxproj -> C:\Users\ohs45019\Documents\HAL\就職作品\Final_Project\x64\Debug\Final_Project.exe
+  Final_Project.vcxproj -> C:\Users\ohs45019\Documents\HAL\就職作品\Final_Project\x64\Debug\Final_Project.pdb (Full PDB)
