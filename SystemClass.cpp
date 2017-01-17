@@ -554,14 +554,21 @@ bool CSystem::HandleInput(float frameTime)
 {
 	
 	bool key;
+	CScene* newScene;
 
 	//ƒV[ƒ“‘JˆÚ‚ðs‚¤
 	key = m_Input->IsEnterTriggered();
-	m_Scene = m_Scene->ChangeScene(key);
-	if (!m_Scene)
+	newScene = m_Scene->ChangeScene(key);
+	if (!newScene)
 	{
 		MessageBox(m_hwnd, L"Failed to Load Scene.", L"Error", MB_OK);
 		return false;
+	}
+
+	if (newScene != m_Scene)
+	{
+		m_Scene = newScene;
+		m_Scene->Initialize();
 	}
 
 	/*

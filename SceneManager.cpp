@@ -120,7 +120,7 @@ bool CScene::Render()
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix;
 	CGameObjectBase* tempObj;
 
-	m_Direct3D->BeginScene(1.0f, 0.0f, 0.0f, 1.0f);
+	m_Direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
 
 	m_Camera->Render();
 	

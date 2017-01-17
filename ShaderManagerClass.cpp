@@ -384,7 +384,6 @@ bool CShaderManager::RenderTextureShader(ID3D11DeviceContext* deviceContext, int
 	
 	return true;
 }
-/*
 //==============================================================================
 //  関数名		 RenderBumpMapShader	
 //  説明			 バンプマップの描画関数
@@ -419,6 +418,7 @@ bool CShaderManager::RenderBumpMapShader(ID3D11DeviceContext* deviceContext, int
 }
 
 
+/*
 //==============================================================================
 //  関数名		 RenderSpecularShader	
 //  説明			 鏡面の描画関数

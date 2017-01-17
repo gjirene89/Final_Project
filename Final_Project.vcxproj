@@ -142,9 +142,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BumpMapShaderClass.h" />
     <ClInclude Include="CameraClass.h" />
+    <ClInclude Include="BlockClass.h" />
+    <ClInclude Include="HitBaseClass.h" />
+    <ClInclude Include="HitBoxClass.h" />
+    <ClInclude Include="HitSphereClass.h" />
     <ClInclude Include="ColorShaderClass.h" />
     <ClInclude Include="CPUClass.h" />
+    <ClInclude Include="StageClass.h" />
+    <ClInclude Include="Macros.h" />
+    <ClInclude Include="MathUtility.h" />
+    <ClInclude Include="ModelClass.h" />
     <ClInclude Include="D3DClass.h" />
     <ClInclude Include="FPSClass.h" />
     <ClInclude Include="GameClearScene.h" />
@@ -163,9 +172,17 @@
     <ClInclude Include="TitleScene.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BumpMapShaderClass.cpp" />
     <ClCompile Include="CameraClass.cpp" />
+    <ClCompile Include="BlockClass.cpp" />
+    <ClCompile Include="HitBaseClass.cpp" />
+    <ClCompile Include="HitBoxClass.cpp" />
+    <ClCompile Include="HitSphereClass.cpp" />
     <ClCompile Include="ColorShaderClass.cpp" />
     <ClCompile Include="CPUClass.cpp" />
+    <ClCompile Include="StageClass.cpp" />
+    <ClCompile Include="MathUtility.cpp" />
+    <ClCompile Include="ModelClass.cpp" />
     <ClCompile Include="D3DClass.cpp" />
     <ClCompile Include="FPSClass.cpp" />
     <ClCompile Include="GameClearScene.cpp" />
@@ -183,6 +200,8 @@
     <ClCompile Include="TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Shader\BumpMap.ps" />
+    <None Include="Resources\Shader\BumpMap.vs" />
     <None Include="Resources\Shader\Color.ps" />
     <None Include="Resources\Shader\Color.vs" />
     <None Include="Resources\Shader\Texture.ps" />

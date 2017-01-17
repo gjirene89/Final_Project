@@ -15,9 +15,9 @@
 
 #include "ColorShaderClass.h"
 #include "TextureShaderClass.h"
+#include "BumpMapShaderClass.h"
 
-/*	#include "BumpMapShaderClass.h"
-
+/*	
 #include "ClothShaderClass.h"
 #include "SpecularShaderClass.h"
 #include "ShadowShaderClass.h"
@@ -51,6 +51,12 @@ public:
 	bool RenderTextureShader(ID3D11DeviceContext* deviceContext, int indexCount,
 		XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, 
 		CTexture::TextureData textureData);
+	
+	bool RenderBumpMapShader(ID3D11DeviceContext* deviceContext, int indexCount,
+		XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix,
+		CTexture::TextureData colorTexture, CTexture::TextureData normalTexture,
+		XMFLOAT3 lightDirection, XMFLOAT4 diffuseColor);
+	
 	/*
 	bool RenderSpecularShader(ID3D11DeviceContext* deviceContext, int indexCount, 
 		XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, 
@@ -58,10 +64,6 @@ public:
 		XMFLOAT3 lightDirection, XMFLOAT4 ambientColor, XMFLOAT4 diffuseColor,
 		XMFLOAT3 cameraPosition, XMFLOAT4 specularColor, float specularPower);
 
-	bool RenderBumpMapShader(ID3D11DeviceContext* deviceContext, int indexCount,
-		XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix,
-		CTexture::TextureData colorTexture, CTexture::TextureData normalTexture,
-		XMFLOAT3 lightDirection, XMFLOAT4 diffuseColor);
 
 	bool RenderClothShader(ID3D11DeviceContext* deviceContext, int indexCount,
 		XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix,
@@ -99,9 +101,9 @@ private:
 
 	CColorShader* m_ColorShader;	
 	CTextureShader* m_TextureShader;
+	CBumpMapShader* m_BumpMapShader;
 
 	/*
-	CBumpMapShader* m_BumpMapShader;
 	CClothShader* m_ClothShader;
 	CSpecularShader* m_SpecularShader;
 	CShadowShader* m_ShadowShader;

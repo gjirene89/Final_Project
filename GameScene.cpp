@@ -9,6 +9,7 @@
 //=======================================================================//
 # include "GameScene.h"
 
+
 //==============================================================================
 //	関数名		CGameScene
 //	説明	        ゲームシーンのコンストラクタ
@@ -39,7 +40,7 @@ CGameScene::CGameScene()
 //==============================================================================
 bool CGameScene::Initialize()
 {
-	m_Camera->SetPosition(0, 0, 10);
+	m_Camera->SetPosition(100, 0, -200);
 
 	CScene::Initialize();
 
@@ -59,7 +60,7 @@ CScene* CGameScene::ChangeScene(bool isChange)
 {
 	if (!isChange)
 		return this;
-
+	
 	return GetScene(SCENE_CLEAR);
 }
 
@@ -83,6 +84,16 @@ bool CGameScene::LoadScene(void)
 		return false;
 	}
 
+	//オブジェクトの追加
+	objArray = new CStage();
+
+	result = objArray->InitializeObject(m_Direct3D->GetDevice(), m_Direct3D->GetDeviceContext());// , "../Final_Project/Resources/Model/square.txt");
+	if (!result)
+	{
+		//error message
+		return false;
+	}
+	//objArray->LoadColorMap(m_Direct3D->GetDevice(), m_Direct3D->GetDeviceContext(), "../Final_Project/Resources/Texture/sun.tga");
 
 	return true;
 

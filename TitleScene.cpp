@@ -85,16 +85,8 @@ bool CTitleScene::LoadScene(void)
 		return false;
 	}
 
-	//オブジェクトの追加
-	objArray = new CGameObjectBase();
-	result = objArray->Initialize(m_Direct3D->GetDevice(), "../Final_Project/Resources/Model/square.txt");
-	if (!result)
-	{
-		//error message
-		return false;
-	}
-	objArray->LoadColorMap(m_Direct3D->GetDevice(), m_Direct3D->GetDeviceContext(), "../Final_Project/Resources/Texture/sun.tga");
 
+	
 	return true;
 }
 
