@@ -1,11 +1,3 @@
-﻿  StageClass.cpp
-c:\users\ohs45019\documents\hal\就職作品\final_project\stageclass.cpp(190): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-c:\users\ohs45019\documents\hal\就職作品\final_project\stageclass.cpp(191): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-c:\users\ohs45019\documents\hal\就職作品\final_project\stageclass.cpp(237): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\ohs45019\documents\hal\就職作品\final_project\stageclass.cpp(238): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\ohs45019\documents\hal\就職作品\final_project\stageclass.cpp(258): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-c:\users\ohs45019\documents\hal\就職作品\final_project\stageclass.cpp(259): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
-  BlockClass.cpp
-  Generating Code...
+﻿  TitleScene.cpp
   Final_Project.vcxproj -> C:\Users\ohs45019\Documents\HAL\就職作品\Final_Project\x64\Debug\Final_Project.exe
   Final_Project.vcxproj -> C:\Users\ohs45019\Documents\HAL\就職作品\Final_Project\x64\Debug\Final_Project.pdb (Full PDB)

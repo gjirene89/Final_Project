@@ -24,7 +24,7 @@
 //!	@class	CStage
 //!	@brief ステージクラス
 //=============================================================================
-class CStage :  public CGameObjectBase
+class CStage : public CGameObjectBase
 {
 public:
 
@@ -35,7 +35,7 @@ public:
 
 		STAGE_MAX		//ステージ最大数
 	};
-	
+
 	CStage(void);			//コンストラクタ
 	CStage(const CStage& other) {};
 	~CStage(void);			//デストラクタ
@@ -58,7 +58,7 @@ private:
 	static CBlock *redBlock;				//赤ブロックのインスタンス
 	static CBlock *invisibleBlock;			//見えない壁のインスタンス
 	static CBlock *greenBlock;			//緑ブロックのインスタンス
-	
+
 	static CBlock *stage[MAX_BLOCKS_H][MAX_BLOCKS_W];	//ステージ１
 
 };

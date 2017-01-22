@@ -13,6 +13,7 @@
 # include "GameObjectBase.h"
 # include "SackStateBase.h"
 # include "HitBaseClass.h"
+# include "ModelClass.h"
 //# include "CXFile.h"
 //# include "CDebugFont.h"
 //# include "HitManager.h"
@@ -27,7 +28,7 @@
 //	クラス名		CSacksBase
 //==============================================================================
 class CSackBase : public CGameObjectBase
-{ 
+{
 public:
 	//プレイヤーの向き
 	enum SACK_DIR
@@ -37,7 +38,7 @@ public:
 		SACK_DIR_NONE
 	};
 
-	
+
 	//あたり判定
 	CHit_Base	*hitCenter;						//中心
 	CHit_Base	*hitLeft;						//左
@@ -47,19 +48,19 @@ public:
 	CHit_Base	*hitRightOut;					//右（ジャンプ用）
 	CHit_Base	*hitLeftOut;					//左（ジャンプ用）
 	CHit_Base	*hitUpOut;						//上（連結用）
-	
+
 	CSackBase	*child_;				//ついている蹴鞠
 
 
 	CSackBase(float posX, float posY, GAMEOBJTYPE gObj);	//コンストラクタ
 	~CSackBase(void);							//デストラクタ
 
-	virtual void Initalize(void);							//初期化関数
+	virtual void Initialize(void);							//初期化関数
 	virtual void Action(void);							//処理関数
-	//virtual void Input(void){};							//入力関数
+//virtual void Input(void){};							//入力関数
 	virtual void Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix);							//描画関数
 	virtual void PostAction(void);						//後処理関数
-	
+
 	virtual void MoveRight(void);						//右へ移動
 	virtual void MoveLeft(void);						//左へ移動
 	void Jump(void);							//ジャンプ
@@ -94,7 +95,8 @@ protected:
 	static int noSack;
 	int noId;
 	char nameId[256];
-	
+
+	CModel* m_model;
 
 	//CRope *rope;
 	SackStateBase* state_;

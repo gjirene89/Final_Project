@@ -145,6 +145,8 @@
     <ClInclude Include="BumpMapShaderClass.h" />
     <ClInclude Include="CameraClass.h" />
     <ClInclude Include="BlockClass.h" />
+    <ClInclude Include="HitManager.h" />
+    <ClInclude Include="SackBaseClass.h" />
     <ClInclude Include="HitBaseClass.h" />
     <ClInclude Include="HitBoxClass.h" />
     <ClInclude Include="HitSphereClass.h" />
@@ -175,11 +177,13 @@
     <ClCompile Include="BumpMapShaderClass.cpp" />
     <ClCompile Include="CameraClass.cpp" />
     <ClCompile Include="BlockClass.cpp" />
+    <ClCompile Include="HitManager.cpp" />
     <ClCompile Include="HitBaseClass.cpp" />
     <ClCompile Include="HitBoxClass.cpp" />
     <ClCompile Include="HitSphereClass.cpp" />
     <ClCompile Include="ColorShaderClass.cpp" />
     <ClCompile Include="CPUClass.cpp" />
+    <ClCompile Include="SackBaseClass.cpp" />
     <ClCompile Include="StageClass.cpp" />
     <ClCompile Include="MathUtility.cpp" />
     <ClCompile Include="ModelClass.cpp" />

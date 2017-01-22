@@ -94,6 +94,11 @@ protected:
 	bool				m_isHidden;						//true: 描画しない		false：描画する
 	CGameObjectBase*	m_pNextObj;						//次のオブジェクトへのポインタ
 
+	XMMATRIX			m_matrix;
+	XMFLOAT3			m_worldPos;
+	XMFLOAT3			m_localPos;
+	
+
 	float m_positionX;
 	float m_positionY;
 	float m_positionZ;
@@ -101,6 +106,12 @@ protected:
 	float m_rotationX;
 	float m_rotationY;
 	float m_rotationZ;
+
+public:
+
+	XMFLOAT3 GetLocalPos() { return m_localPos; };
+	XMFLOAT3 GetWorldPos() { return m_worldPos; };
+	XMMATRIX GetMatrix() { return m_matrix; };
 };
 
 #endif

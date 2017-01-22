@@ -49,7 +49,7 @@ public:
 
 	void Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix); //描画関数
 
-	//BLOCK_COLOR GetColor(void);
+																														   //BLOCK_COLOR GetColor(void);
 
 private:
 
@@ -58,7 +58,7 @@ private:
 	CModel* m_model;
 
 	void SetColor(BLOCK_COLOR color);	//ブロックの色を変える関数
-	
+
 };
 
 #endif

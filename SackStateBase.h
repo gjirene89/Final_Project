@@ -12,7 +12,7 @@
 //	ヘッダー
 //-----------------------------------------------------------------------------
 //# include "CSackBase.h"
-# include "input.h"
+//# include "input.h"
 # include <stdio.h>
 //# include "CSackBase.h"
 
@@ -40,19 +40,19 @@ public:
 
 	};
 
-	SackStateBase(){};
-	SackStateBase(SACK_STATE state){ stateName = state; };
+	SackStateBase() {};
+	SackStateBase(SACK_STATE state) { stateName = state; };
 	virtual ~SackStateBase();								//デストラクタ
 
 	virtual SackStateBase* GetState(SACK_STATE stateName);
-	SACK_STATE GetStateName(void){ return stateName; };
+	SACK_STATE GetStateName(void) { return stateName; };
 
-	virtual void Enter(CSackBase* sack){};					//開始関数
-	virtual void Input(CSackBase* sack){};					//入力関数
-	virtual void Action(CSackBase* sack){};					//処理関数
-	virtual void PostAction(CSackBase* sack){};				//後処理関数
+	virtual void Enter(CSackBase* sack) {};					//開始関数
+	virtual void Input(CSackBase* sack) {};					//入力関数
+	virtual void Action(CSackBase* sack) {};					//処理関数
+	virtual void PostAction(CSackBase* sack) {};				//後処理関数
 
-	virtual char* RenderDebug(void){ return "State : None"; };
+	virtual char* RenderDebug(void) { return "State : None"; };
 
 protected:
 

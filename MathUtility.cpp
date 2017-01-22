@@ -28,13 +28,13 @@
 void MakeWorldMatrix(XMMATRIX& mat, const XMFLOAT3& angle, const XMFLOAT3& trans)
 {
 	XMMATRIX matX, matY, matZ, matTrans;
-		
+
 	matX = XMMatrixRotationX(XM_PI*angle.x / 180.0f);
 	matY = XMMatrixRotationY(XM_PI*angle.y / 180.0f);
 	matZ = XMMatrixRotationZ(XM_PI*angle.z / 180.0f);
 	mat = matX*matY*matZ;
 	matTrans = XMMatrixTranslation(trans.x, trans.y, trans.z);
-	
+
 	mat = mat * matTrans;
 }
 
@@ -59,7 +59,7 @@ void MakeWorldMatrix(XMMATRIX& mat, XMMATRIX& mattotal, const XMFLOAT3& angle, c
 	matTrans = XMMatrixTranslation(trans.x, trans.y, trans.z);
 
 	mat = mat*matTrans;
-	
+
 	mattotal = mat*mattotal;
 }
 
@@ -92,24 +92,24 @@ void SetSizeMatrix(XMMATRIX& mat, const XMFLOAT3 size)
 /*
 void SetProjectionMatrix(D3DXMATRIX mat)
 {
-	g_MatProjection = mat;
+g_MatProjection = mat;
 }
 
 D3DXMATRIX GetProjectionMatrix(void)
 {
-	return g_MatProjection;
+return g_MatProjection;
 }
 
 XMFLOAT3 GetScreenCoords(const XMFLOAT3& pos)
 {
-	XMMATRIX mat;
-	XMFLOAT3 ans;
+XMMATRIX mat;
+XMFLOAT3 ans;
 
-	mat = CCamera::GetActiveCamera()->GetMatrix() * g_MatProjection;
+mat = CCamera::GetActiveCamera()->GetMatrix() * g_MatProjection;
 
-	D3DXVec3TransformCoord(&ans, &pos, &mat);
+D3DXVec3TransformCoord(&ans, &pos, &mat);
 
-	return ans;
+return ans;
 }
 */
 XMFLOAT4 RotationArc(XMVECTOR& v0, XMVECTOR& v1, float& d)
@@ -131,7 +131,7 @@ XMFLOAT4 RotationArc(XMVECTOR& v0, XMVECTOR& v1, float& d)
 	if (d > 1.0f) d = 1.0f;
 	if (d < -1.0f) d = -1.0f;
 
-	float s = (float)sqrt((1+d)*2);
+	float s = (float)sqrt((1 + d) * 2);
 
 	XMStoreFloat4(&q, axis);
 	q.x = q.x / s;
@@ -176,8 +176,8 @@ float CalculateAngle(XMFLOAT3 base, XMFLOAT3 direction)
 	direction.y -= base.y;
 	direction.z -= base.z;
 
-	base = {1.0f,0.0f,0.0f};
-	
+	base = { 1.0f,0.0f,0.0f };
+
 	XMVECTOR dirVec, baseVec;
 	dirVec = XMLoadFloat3(&direction);
 	baseVec = XMLoadFloat3(&base);

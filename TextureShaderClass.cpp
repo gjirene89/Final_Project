@@ -70,7 +70,7 @@ bool CTextureShader::Initialize(ID3D11Device* device, HWND hwnd)
 {
 	bool result;
 
-	result = InitializeShader(device, hwnd, L"../Final_Project/Resources/Shader/Texture.vs", L"../Final_Project/Resources/Shader/Texture.ps");
+	result = InitializeShader(device, hwnd, L"Resources/Shader/Texture.vs", L"Resources/Shader/Texture.ps");
 	if (!result)
 	{
 		return false;

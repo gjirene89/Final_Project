@@ -23,11 +23,11 @@ SackStateBase* SackStateBase::GetState(SACK_STATE stateName)
 	InitializeStates();
 	switch (stateName)
 	{
-		case SACK_NORMAL:	return normalState;
-		case SACK_FALL:     return fallingState;
-		case SACK_DASH:		return dashState;
-		case SACK_JUMP:		return jumpState;
-		case SACK_MOVE:		return moveState;
+	case SACK_NORMAL:	return normalState;
+	case SACK_FALL:     return fallingState;
+	case SACK_DASH:		return dashState;
+	case SACK_JUMP:		return jumpState;
+	case SACK_MOVE:		return moveState;
 	}
 
 	return this;

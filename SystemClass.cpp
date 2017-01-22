@@ -571,6 +571,8 @@ bool CSystem::HandleInput(float frameTime)
 		m_Scene->Initialize();
 	}
 
+
+
 	/*
 	//Set the frame time for calculating the update position
 	m_Position->SetFrameTime(frameTime);

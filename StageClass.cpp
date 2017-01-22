@@ -14,7 +14,7 @@
 //	グローバル変数
 //=============================================================================
 CStage::STAGE CStage::currStage;						//現在のステージ
-CBlock* CStage::stage[MAX_BLOCKS_H][MAX_BLOCKS_W]; 
+CBlock* CStage::stage[MAX_BLOCKS_H][MAX_BLOCKS_W];
 int stageBase[MAX_BLOCKS_H][MAX_BLOCKS_W] =			//ステージブロック配列
 {
 	{ 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1 },
@@ -90,7 +90,7 @@ bool CStage::InitializeObject(ID3D11Device* device, ID3D11DeviceContext* deviceC
 		result = invisibleBlock->InitializeObject(device, deviceContext);
 		if (!result)
 		{
-			return false;
+		return false;
 		}
 		*/
 	}
@@ -123,13 +123,13 @@ void CStage::Shutdown()
 		redBlock = nullptr;
 	}
 
-	if (greenBlock != nullptr) 
+	if (greenBlock != nullptr)
 	{
 		greenBlock->Shutdown();
 		delete greenBlock;
 		greenBlock = nullptr;
 	}
-	
+
 	if (invisibleBlock != nullptr)
 	{
 		invisibleBlock->Shutdown();
@@ -167,7 +167,7 @@ void CStage::Initialize(void)
 
 			}
 		}
-	
+
 }
 
 //==============================================================================

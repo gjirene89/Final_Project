@@ -135,6 +135,12 @@
     <ClInclude Include="BumpMapShaderClass.h">
       <Filter>Header Files\ShaderClass</Filter>
     </ClInclude>
+    <ClInclude Include="SackBaseClass.h">
+      <Filter>Header Files\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="HitManager.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -214,6 +220,12 @@
     </ClCompile>
     <ClCompile Include="BumpMapShaderClass.cpp">
       <Filter>Source Files\ShaderClass</Filter>
+    </ClCompile>
+    <ClCompile Include="HitManager.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="SackBaseClass.cpp">
+      <Filter>Source Files\GameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

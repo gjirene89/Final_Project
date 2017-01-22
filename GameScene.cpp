@@ -40,7 +40,7 @@ CGameScene::CGameScene()
 //==============================================================================
 bool CGameScene::Initialize()
 {
-	m_Camera->SetPosition(100, 0, -200);
+	m_Camera->SetPosition(150, 50, -200);
 
 	CScene::Initialize();
 
@@ -87,13 +87,13 @@ bool CGameScene::LoadScene(void)
 	//オブジェクトの追加
 	objArray = new CStage();
 
-	result = objArray->InitializeObject(m_Direct3D->GetDevice(), m_Direct3D->GetDeviceContext());// , "../Final_Project/Resources/Model/square.txt");
+	result = objArray->InitializeObject(m_Direct3D->GetDevice(), m_Direct3D->GetDeviceContext());// , "Resources/Model/square.txt");
 	if (!result)
 	{
 		//error message
 		return false;
 	}
-	//objArray->LoadColorMap(m_Direct3D->GetDevice(), m_Direct3D->GetDeviceContext(), "../Final_Project/Resources/Texture/sun.tga");
+	//objArray->LoadColorMap(m_Direct3D->GetDevice(), m_Direct3D->GetDeviceContext(), "Resources/Texture/sun.tga");
 
 	return true;
 

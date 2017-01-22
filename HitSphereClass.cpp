@@ -27,13 +27,13 @@ CHit_Sphere::CHit_Sphere(float radius, GAMEHIT_TYPE type, CGameObjectBase* entit
 	/*
 	if (sphere == nullptr)
 	{
-		sphere = new C3DObject(GAMEOBJTYPE::GOBJ_BOUNDS);
-		sphere->InitMaterial();
-		sphere->SetDiffuse(color);
+	sphere = new C3DObject(GAMEOBJTYPE::GOBJ_BOUNDS);
+	sphere->InitMaterial();
+	sphere->SetDiffuse(color);
 
-		LPD3DXMESH tempMesh;
-		D3DXCreateSphere(CDirectXGraphics::GetDXDevice(), 1, 10, 10, &tempMesh, nullptr);
-		sphere->SetMesh(tempMesh);
+	LPD3DXMESH tempMesh;
+	D3DXCreateSphere(CDirectXGraphics::GetDXDevice(), 1, 10, 10, &tempMesh, nullptr);
+	sphere->SetMesh(tempMesh);
 	}
 	*/
 }
@@ -49,7 +49,7 @@ CHit_Sphere::~CHit_Sphere()
 {
 	/*
 	if (sphere != nullptr)
-		delete sphere;
+	delete sphere;
 	*/
 }
 

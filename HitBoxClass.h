@@ -21,7 +21,7 @@
 //==============================================================================
 class CHit_Box : public CHit_Base
 {
-	
+
 public:
 	CHit_Box(float sizeX, float sizeY, float sizeZ, GAMEHIT_TYPE type, CGameObjectBase* entity);
 	~CHit_Box(void);
@@ -38,7 +38,7 @@ public:
 private:
 
 	XMFLOAT3			 m_dimension;			//ÉTÉCÉY
-//	static C3DObject	*m_box;
+												//	static C3DObject	*m_box;
 
 };
 

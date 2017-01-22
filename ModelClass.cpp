@@ -83,7 +83,7 @@ void CModel::Render(ID3D11DeviceContext* deviceContext)//, XMMATRIX worldMatrix,
 
 	RenderBuffersIndex(deviceContext);
 	//CShaderManager::getInstance().RenderColorShader(deviceContext, m_indexCount, worldMatrix, viewMatrix, projectionMatrix, XMFLOAT4(0.1f,1.0f,0.0f,1.0f));
-//	CShaderManager::getInstance().RenderTextureShader(deviceContext, m_indexCount, worldMatrix, viewMatrix, projectionMatrix, m_Texture->GetTextureData());
+	//	CShaderManager::getInstance().RenderTextureShader(deviceContext, m_indexCount, worldMatrix, viewMatrix, projectionMatrix, m_Texture->GetTextureData());
 	return;
 }
 /*
@@ -99,9 +99,9 @@ void CModel::Render(ID3D11DeviceContext* deviceContext)//, XMMATRIX worldMatrix,
 //==============================================================================
 void CGameObjectBase::Render(ID3D11DeviceContext* deviceContext, ID3D11Buffer* vertexBuffer)
 {
-	RenderBuffersIndex(deviceContext, vertexBuffer);
+RenderBuffersIndex(deviceContext, vertexBuffer);
 
-	return;
+return;
 }
 */
 

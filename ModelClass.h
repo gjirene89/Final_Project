@@ -86,7 +86,7 @@ private:
 	bool LoadModel(char* filename);
 	void ReleaseModel(void);
 
-	
+
 private:
 	ID3D11Buffer* m_vertexBuffer;
 	ID3D11Buffer* m_indexBuffer;

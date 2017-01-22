@@ -46,8 +46,8 @@ public:
 
 	bool Initialize(ID3D11Device* device, HWND hwnd);
 	void Shutdown(void);
-	bool Render(ID3D11DeviceContext* deviceContext, int indexCount, 
-		XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, 
+	bool Render(ID3D11DeviceContext* deviceContext, int indexCount,
+		XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix,
 		CTexture::TextureData colorTexture, CTexture::TextureData normalTexture,
 		XMFLOAT3 lightDirection, XMFLOAT4 diffuseColor);
 
@@ -55,8 +55,8 @@ private:
 	bool InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vsFilename, WCHAR* psFilename);
 	void ShutdownShader(void);
 	void OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwnd, WCHAR* shaderFilename);
-	bool SetShaderParameters(ID3D11DeviceContext* deviceContext, 
-		XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, 
+	bool SetShaderParameters(ID3D11DeviceContext* deviceContext,
+		XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix,
 		CTexture::TextureData colorTexture, CTexture::TextureData normalTexture,
 		XMFLOAT3 ligthDirection, XMFLOAT4 diffuseColor);
 	void RenderShader(ID3D11DeviceContext* deviceContext, int indexCount);

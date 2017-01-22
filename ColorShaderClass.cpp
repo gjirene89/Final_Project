@@ -68,7 +68,7 @@ bool CColorShader::Initialize(ID3D11Device* device, HWND hwnd)
 {
 	bool result;
 
-	result = InitializeShader(device, hwnd, L"../Final_Project/Resources/Shader/Color.vs", L"../Final_Project/Resources/Shader/Color.ps");
+	result = InitializeShader(device, hwnd, L"Resources/Shader/Color.vs", L"Resources/Shader/Color.ps");
 	if (!result)
 	{
 		return false;

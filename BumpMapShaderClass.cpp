@@ -70,8 +70,8 @@ bool CBumpMapShader::Initialize(ID3D11Device* device, HWND hwnd)
 {
 	bool result;
 
-	result = InitializeShader(device, hwnd, L"../20161206_ShaderTest/assets/Shader/BumpMap.vs", L"../20161206_ShaderTest/assets/Shader/BumpMap.ps");
-	if(!result)
+	result = InitializeShader(device, hwnd, L"Resources/Shader/BumpMap.vs", L"Resources/Shader/BumpMap.ps");
+	if (!result)
 	{
 		return false;
 	}
@@ -113,7 +113,7 @@ void CBumpMapShader::Shutdown()
 //			bool	true 成功　　　false 失敗
 //==============================================================================
 bool CBumpMapShader::Render(ID3D11DeviceContext* deviceContext, int indexCount,
-	XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, 
+	XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix,
 	CTexture::TextureData colorTexture, CTexture::TextureData normalTexture,
 	XMFLOAT3 lightDirection, XMFLOAT4 diffuseColor)
 {
@@ -184,7 +184,7 @@ bool CBumpMapShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vs
 	result = D3DCompileFromFile(psFilename, nullptr, nullptr, "BumpMapPixelShader", "ps_5_0", D3D10_SHADER_ENABLE_STRICTNESS, 0, &pixelShaderBuffer, &errorMessage);
 	if (FAILED(result))
 	{
-		if(errorMessage)
+		if (errorMessage)
 		{
 			//エラーメッセージを出力する
 			OutputShaderErrorMessage(errorMessage, hwnd, psFilename);
@@ -268,7 +268,7 @@ bool CBumpMapShader::InitializeShader(ID3D11Device* device, HWND hwnd, WCHAR* vs
 
 	pixelShaderBuffer->Release();
 	pixelShaderBuffer = 0;
-	
+
 	//頂点シェーダーのバッファの設定
 	matrixBufferDesc.Usage = D3D11_USAGE_DYNAMIC;
 	matrixBufferDesc.ByteWidth = sizeof(MatrixBufferType);
@@ -428,7 +428,7 @@ void CBumpMapShader::OutputShaderErrorMessage(ID3D10Blob* errorMessage, HWND hwn
 //			bool	                    true 成功　　　       false 失敗
 //==============================================================================
 bool CBumpMapShader::SetShaderParameters(ID3D11DeviceContext* deviceContext,
-	XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, 
+	XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix,
 	CTexture::TextureData colorTexture, CTexture::TextureData normalTexture,
 	XMFLOAT3 lightDirection, XMFLOAT4 diffuseColor)
 {

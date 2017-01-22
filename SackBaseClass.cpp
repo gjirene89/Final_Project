@@ -10,6 +10,12 @@
 # include "SackBaseClass.h"
 # include "SackStateBaseHeaders.h"
 # include "Macros.h"
+# include "HitBoxClass.h"
+# include "HitSphereClass.h"
+# include "ShaderManagerClass.h"
+# include "HitManager.h"
+# include "MathUtility.h"
+# include "StageClass.h"
 //# include "CDirectxGraphics.h"
 //# include "CStage.h"
 //# include "CHit_Sphere.h"
@@ -38,13 +44,13 @@ CSackBase::CSackBase(float posX, float posY, GAMEOBJTYPE gObj) : CGameObjectBase
 
 	//色設定
 	//InitMaterial();
-	
+
 	//位置の初期化
 	initPosition = { posX * BLOCK_SIZE, posY * BLOCK_SIZE + SACK_RADIUS, 0.0f };
 	position = oldPosition = initPosition;
 
-	rope = nullptr;
-	orientation = {0,0,0};
+	//rope = nullptr;
+	orientation = { 0,0,0 };
 
 	//当たり判定
 	hitCenter = new CHit_Box(SACK_RADIUS * 2.5, SACK_RADIUS * 2, SACK_RADIUS * 2, GAMEHIT_TYPE::HIT_SACK, this);
@@ -65,16 +71,16 @@ CSackBase::CSackBase(float posX, float posY, GAMEOBJTYPE gObj) : CGameObjectBase
 //==============================================================================
 CSackBase::~CSackBase()
 {
-	if (rope != nullptr)	delete rope;
+	//if (rope != nullptr)	delete rope;
 
 	//当たり判定のポインタを解放する
-	if (hitCenter	!= nullptr)		delete hitCenter;
-	if (hitRight	!= nullptr)		delete hitRight;
-	if (hitLeft		!= nullptr)		delete hitLeft;
-	if (hitDown		!= nullptr)		delete hitDown;
-	if (hitUp		!= nullptr)		delete hitUp;
+	if (hitCenter != nullptr)		delete hitCenter;
+	if (hitRight != nullptr)		delete hitRight;
+	if (hitLeft != nullptr)		delete hitLeft;
+	if (hitDown != nullptr)		delete hitDown;
+	if (hitUp != nullptr)		delete hitUp;
 	if (hitRightOut != nullptr)		delete hitRightOut;
-	if (hitLeftOut  != nullptr)		delete hitLeftOut;
+	if (hitLeftOut != nullptr)		delete hitLeftOut;
 }
 
 //==============================================================================
@@ -84,19 +90,23 @@ CSackBase::~CSackBase()
 //!	@retval	なし
 //!	@note	
 //==============================================================================
-void CSackBase::Init(void)
+void CSackBase::Initialize(void)
 {
 	//位置の初期化
 	position = oldPosition = initPosition;
 	impulse = { 0, 0, 0 };
 
-	D3DXMatrixRotationY(&matrix, initAngle);
-	
+	m_matrix = XMMatrixRotationY(initAngle);
+	//D3DXMatrixRotationY(&matrix, initAngle);
+
+	XMFLOAT4X4 tempMatrix;
+
+	XMStoreFloat4x4(&tempMatrix, m_matrix);
 
 	//向いている方向
-	orientation.x = matrix._11;
-	orientation.y = matrix._12;
-	orientation.z = matrix._13;
+	orientation.x = tempMatrix._11;
+	orientation.y = tempMatrix._12;
+	orientation.z = tempMatrix._13;
 
 	UpdateDisplacement();
 	//状態の初期化
@@ -105,7 +115,7 @@ void CSackBase::Init(void)
 	parent = nullptr;
 	child_ = nullptr;
 
-	if (rope != nullptr)	rope->Init(matrix);
+//	if (rope != nullptr)	rope->Init(matrix);
 }
 
 //==============================================================================
@@ -129,13 +139,13 @@ void CSackBase::Action(void)
 
 	//当たり判定データ更新
 	UpdateHit();
-
-	if (rope!= nullptr)
+	/*
+	if (rope != nullptr)
 		rope->Action(matrix);
-
+		
 	if (child_ != nullptr)
 		rope->LockEnd(child_->GetHookPos());
-
+*/
 }
 
 //==============================================================================
@@ -145,16 +155,27 @@ void CSackBase::Action(void)
 //!	@retval	なし
 //!	@note	
 //==============================================================================
-void CSackBase::Render(void)
+void CSackBase::Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix)
 {
-	if (rope != nullptr) rope->Render();
+	if (!m_model)
+		return;
 
-	RenderDebug();
-	
-	C3DObject::Render();
+	CalculateWorldMatrix(worldMatrix);
+	m_model->Render(deviceContext);
 
+	CShaderManager::getInstance().RenderTextureShader(deviceContext, m_model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_model->GetColorTexture());
+
+	//if (rope != nullptr) rope->Render();
+
+	//RenderDebug();
+
+
+	//C3DObject::Render();
+
+	/*
 	if (CDebug::displayAxis && !CDebug::GetIsHidden())
 		RenderAxis();
+		*/
 }
 
 //==============================================================================
@@ -166,7 +187,7 @@ void CSackBase::Render(void)
 //==============================================================================
 void CSackBase::PostAction(void)
 {
-	if (rope != nullptr) rope->PostAction();
+	//if (rope != nullptr) rope->PostAction();
 	state_->PostAction(this);
 }
 
@@ -191,7 +212,7 @@ void CSackBase::MoveRight(void)
 	}
 
 	CSackBase* tempObj = (CSackBase*)HitManager::CheckHit(hitRightOut, GAMEHIT_TYPE::HIT_SACK);
-	if (tempObj!=nullptr && tempObj!= parent)
+	if (tempObj != nullptr && tempObj != parent)
 	{
 		impulse.y = CLIMB_FORCE;
 	}
@@ -287,7 +308,7 @@ void CSackBase::Pull(void)
 		{
 			if (angle > 50.0f && angle < 120.f)
 				Jump();
-			else 
+			else
 				MoveRight();
 		}
 		break;
@@ -295,9 +316,9 @@ void CSackBase::Pull(void)
 	case SackStateBase::SACK_NORMAL:
 	case SackStateBase::SACK_MOVE:
 		if ((CalculateDistance(position, parent->GetWorldPos()) > SACK_RADIUS * 3.0f &&
-			parent->GetImpulse().x > 0 && angle < 70.0f ) || 
+			parent->GetImpulse().x > 0 && angle < 70.0f) ||
 			(CalculateDistance(position, parent->GetWorldPos()) > SACK_RADIUS * 3.0f &&
-			parent->GetImpulse().x > 0 && angle < 90.0f))
+				parent->GetImpulse().x > 0 && angle < 90.0f))
 			MoveRight();
 		break;
 
@@ -308,7 +329,7 @@ void CSackBase::Pull(void)
 			impulse.x = DASH_FORCE;
 		}
 		break;
-	}	
+	}
 }
 
 //==============================================================================
@@ -321,11 +342,11 @@ void CSackBase::Pull(void)
 void CSackBase::Chain(void)
 {
 	if (parent != nullptr)	return;
-	
+
 	CSackBase* sack = (CSackBase*)HitManager::CheckHit(hitUpOut, GAMEHIT_TYPE::HIT_SACK);
 
 	if (sack == nullptr)	return;
-	
+
 	if (sack->GetStringDir() == hookDir && sack->child_ == nullptr)
 	{
 		parent = sack;
@@ -337,7 +358,7 @@ void CSackBase::ClearChain(void)
 {
 	if (stringDir == SACK_DIR_NONE)	return;
 
-	parent->rope->ClearLock();
+	//parent->rope->ClearLock();
 	parent->child_ = nullptr;
 	parent = nullptr;
 }
@@ -500,7 +521,7 @@ CSackBase* CSackBase::GetParent(void)
 //!	@param	なし
 //!	@retval	D3DXVECTOR3	oldImpulse		オブジェクトの弾み
 //==============================================================================
-D3DXVECTOR3 CSackBase::GetImpulse(void)
+XMFLOAT3 CSackBase::GetImpulse(void)
 {
 	return oldImpulse;
 }
@@ -515,7 +536,8 @@ float CSackBase::GetRopePullForce(void)
 {
 	if (parent == nullptr)
 		return 0;
-	return parent->rope->GetPullForce();
+	//return parent->rope->GetPullForce();
+	return 0;
 }
 
 //==============================================================================
@@ -529,7 +551,8 @@ float CSackBase::GetRopePullAngle(void)
 	if (parent == nullptr)
 		return 0;
 
-	return parent->rope->GetPullAngle();
+	//return parent->rope->GetPullAngle();
+	return 0;
 }
 
 //==============================================================================
@@ -630,7 +653,7 @@ void CSackBase::CreateMesh(void)
 {
 	//仮のメッシュの作成
 	//D3DXCreateBox(CDirectXGraphics::GetDXDevice(), SACK_RADIUS * 2, SACK_RADIUS * 2, SACK_RADIUS * 2, &mesh, nullptr);
-	D3DXCreateSphere(CDirectXGraphics::GetDXDevice(), SACK_RADIUS, 20, 20, &mesh, nullptr);
+	//D3DXCreateSphere(CDirectXGraphics::GetDXDevice(), SACK_RADIUS, 20, 20, &mesh, nullptr);
 
 }
 
@@ -648,9 +671,9 @@ void CSackBase::UpdateDisplacement(void)
 	position.x += impulse.x / 15.0f;
 
 	//マトリックスの更新
-	matrix._41 = position.x;
-	matrix._42 = position.y;
-	matrix._43 = position.z;
+	m_positionX = position.x;
+	m_positionY = position.y;
+	m_positionZ = position.z;
 
 }
 
@@ -665,12 +688,12 @@ void CSackBase::UpdateHit(void)
 {
 	hitCenter->UpdatePosition(position);
 	hitLeft->UpdatePosition({ position.x - SACK_RADIUS, position.y, position.z });
-	hitRight->UpdatePosition({position.x + SACK_RADIUS, position.y, position.z});
-	hitUp->UpdatePosition({position.x, position.y + SACK_RADIUS, position.z});
+	hitRight->UpdatePosition({ position.x + SACK_RADIUS, position.y, position.z });
+	hitUp->UpdatePosition({ position.x, position.y + SACK_RADIUS, position.z });
 	hitDown->UpdatePosition({ position.x, position.y - SACK_RADIUS, position.z });
 	hitRightOut->UpdatePosition({ position.x + SACK_RADIUS * 2, position.y, position.z });
 	hitLeftOut->UpdatePosition({ position.x - SACK_RADIUS * 2, position.y, position.z });
-	hitUpOut->UpdatePosition({position.x, position.y + SACK_RADIUS * 2, position.z});
+	hitUpOut->UpdatePosition({ position.x, position.y + SACK_RADIUS * 2, position.z });
 
 	HitManager::AddHit(hitCenter);
 	HitManager::AddHit(hitRight);
@@ -692,9 +715,10 @@ void CSackBase::UpdateHit(void)
 //==============================================================================
 void CSackBase::RenderDebug(void)
 {
+	/*
 	if (CDebug::GetIsHidden() || !CDebug::displayStats)	return;
 
-	int posX = 300 * (noId -1);
+	int posX = 300 * (noId - 1);
 	int posY = 0;
 
 	char text[256];
@@ -715,10 +739,11 @@ void CSackBase::RenderDebug(void)
 		sprintf_s(text, "PullForce : %f", GetRopePullForce());
 		CDebug::GetFont()->DrawTextA(posX, posY + 150, text);
 		sprintf_s(text, "PullAngle(deg) : %.0f", CalculateAngle(position, parent->GetWorldPos()));
-		CDebug::GetFont()->DrawTextA(posX, posY + 180,text);
+		CDebug::GetFont()->DrawTextA(posX, posY + 180, text);
 	}
 	else
 		CDebug::GetFont()->DrawTextA(posX, posY + 120, "isChained : false");
+		*/
 }
 
 SackStateBase* CSackBase::GetState(void)
@@ -726,17 +751,20 @@ SackStateBase* CSackBase::GetState(void)
 	return state_;
 }
 
-D3DXVECTOR3 CSackBase::GetHookPos(void)
+XMFLOAT3 CSackBase::GetHookPos(void)
 {
-	D3DXMATRIX  hookMatrix, transMatrix, rotMatrix;
+	XMMATRIX  hookMatrix, transMatrix, rotMatrix;
+	XMFLOAT4X4 hookMatTemp;
 
-	D3DXMatrixTranslation(&hookMatrix, 0, SACK_RADIUS, 7);
-	D3DXMatrixTranslation(&transMatrix, position.x, position.y, position.z);
-	D3DXMatrixRotationY(&rotMatrix, initAngle);
+	hookMatrix = XMMatrixTranslation(0, SACK_RADIUS, 7);
+	transMatrix = XMMatrixTranslation(position.x, position.y, position.z);
+	rotMatrix = XMMatrixRotationY(initAngle);
 
 	hookMatrix = hookMatrix * rotMatrix * transMatrix;
 
-	return{ hookMatrix._41, hookMatrix._42, hookMatrix._43 };
+	XMStoreFloat4x4(&hookMatTemp, hookMatrix);
+
+	return{ hookMatTemp._41, hookMatTemp._42, hookMatTemp._43 };
 }
 //******************************************************************************
 //	End of file.

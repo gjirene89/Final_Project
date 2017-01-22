@@ -21,18 +21,18 @@
 CHit_Box::CHit_Box(float sizeX, float sizeY, float sizeZ, GAMEHIT_TYPE type, CGameObjectBase* entity) : CHit_Base(type)
 {
 	m_entity = entity;
-	m_dimension = {sizeX, sizeY, sizeZ};
+	m_dimension = { sizeX, sizeY, sizeZ };
 
 	/*
 	if (box == nullptr)
 	{
-		box = new C3DObject(GAMEOBJTYPE::GOBJ_BOUNDS);
-		box->InitMaterial();
-		box->SetDiffuse(color);
+	box = new C3DObject(GAMEOBJTYPE::GOBJ_BOUNDS);
+	box->InitMaterial();
+	box->SetDiffuse(color);
 
-		LPD3DXMESH tempMesh;
-		D3DXCreateBox(CDirectXGraphics::GetDXDevice(), 1, 1, 1, &tempMesh, nullptr);
-		box->SetMesh(tempMesh);
+	LPD3DXMESH tempMesh;
+	D3DXCreateBox(CDirectXGraphics::GetDXDevice(), 1, 1, 1, &tempMesh, nullptr);
+	box->SetMesh(tempMesh);
 	}
 	*/
 }
@@ -48,14 +48,14 @@ CHit_Box::~CHit_Box()
 {
 	/*
 	if (box != nullptr)
-		delete box;
+	delete box;
 	*/
 }
 
 void CHit_Box::Render()
 {
 	if (!m_isVisible) return;
-	
+
 	/*
 	box->SetDiffuse(color);
 	box->SetSize(dimension);
@@ -70,7 +70,7 @@ CGameObjectBase* CHit_Box::CheckHit(CHit_Base *pHit, GAMEHIT_TYPE gObjType)
 		return nullptr;
 
 	return pHit->CheckBoxHit(this);
-	
+
 }
 
 CGameObjectBase* CHit_Box::CheckBoxHit(CHit_Base *pBoxHit)
@@ -115,11 +115,11 @@ bool CHit_Box::CheckStage()
 
 	maxX = m_position.x + m_dimension.x / 2.0f;
 	maxY = m_position.y + m_dimension.y / 2.0f;
-//	maxZ = position.z + dimension.z / 2.0f;
+	//	maxZ = position.z + dimension.z / 2.0f;
 
 	minX = m_position.x - m_dimension.x / 2.0f;
 	minY = m_position.y - m_dimension.y / 2.0f;
-//	minZ = position.z - dimension.z / 2.0f;
+	//	minZ = position.z - dimension.z / 2.0f;
 
 	if (CStage::isThereBlock(minX, minY))	return true;
 	if (CStage::isThereBlock(minX, maxY))	return true;
