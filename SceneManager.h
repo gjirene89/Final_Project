@@ -13,6 +13,7 @@
 # include "GameObjectsList.h"
 # include "D3DClass.h"
 # include "CameraClass.h"
+# include "InputClass.h"
 
 //=======================================================================//
 //	ƒOƒ[ƒoƒ‹•Ï”
@@ -50,7 +51,7 @@ public:
 	void ShutdownSceneObjects(void);
 
 	virtual bool Initialize  (void);			//‰Šú‰»ŠÖ”
-	virtual void Input       (void);			//“ü—ÍŠÖ”
+	virtual void Input       (CInput* input);			//“ü—ÍŠÖ”
 	virtual bool Render      (void);			//•`‰æŠÖ”
 	virtual void Action      (void);			//ˆ—ŠÖ”
 	virtual void PostAction  (void);			//Œãˆ—ŠÖ”

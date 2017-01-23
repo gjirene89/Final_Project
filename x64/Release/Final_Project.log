@@ -1,8 +1,72 @@
-﻿  SackBaseClass.cpp
+﻿  BumpMapShaderClass.cpp
+BumpMapShaderClass.cpp(397): warning C4244: '=': conversion from 'SIZE_T' to 'unsigned long', possible loss of data
+  CameraClass.cpp
+  BlockClass.cpp
+  PlayerClass.cpp
+  DashingStateBase.cpp
+  FallingStateBase.cpp
+  HitManager.cpp
+  HitBaseClass.cpp
+  HitBoxClass.cpp
+  HitSphereClass.cpp
+  ColorShaderClass.cpp
+  CPUClass.cpp
+  JumpingStateBase.cpp
+  MidairStateBase.cpp
+  MoveStateBase.cpp
+  NormalStateBase.cpp
+  PlayerState.cpp
+  P_DashingState.cpp
+  P_FallingState.cpp
+  P_FlipState.cpp
+  Compiling...
+  P_JumpingState.cpp
+  P_MidairState.cpp
+  P_MoveState.cpp
+  P_NormalState.cpp
+  SackBaseClass.cpp
+  SackStateBase.cpp
+  StageClass.cpp
+StageClass.cpp(190): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+StageClass.cpp(191): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+StageClass.cpp(237): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+StageClass.cpp(238): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+StageClass.cpp(258): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+StageClass.cpp(259): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  MathUtility.cpp
+MathUtility.cpp(156): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+MathUtility.cpp(157): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+MathUtility.cpp(169): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+MathUtility.cpp(170): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+MathUtility.cpp(192): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+MathUtility.cpp(211): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+MathUtility.cpp(212): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  ModelClass.cpp
+  D3DClass.cpp
+  FPSClass.cpp
+  GameClearScene.cpp
+GameClearScene.cpp(76): warning C4101: 'result': unreferenced local variable
+  GameObjectBase.cpp
+GameObjectBase.cpp(220): warning C4101: 'roll': unreferenced local variable
+GameObjectBase.cpp(220): warning C4101: 'pitch': unreferenced local variable
+GameObjectBase.cpp(220): warning C4101: 'yaw': unreferenced local variable
+  GameScene.cpp
+  InputClass.cpp
+  main.cpp
+  PositionClass.cpp
+  SceneManager.cpp
+  ShaderManagerClass.cpp
+  SystemClass.cpp
+  Compiling...
+  TextureClass.cpp
+  TextureShaderClass.cpp
+TextureShaderClass.cpp(444): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+TextureShaderClass.cpp(445): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  TimerClass.cpp
+  TitleScene.cpp
+TitleScene.cpp(79): warning C4101: 'result': unreferenced local variable
   Generating code
-  20 of 333 functions ( 6.0%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    9 functions had inline decision re-evaluated but remain unchanged
+  All 554 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
   Final_Project.vcxproj -> C:\Users\ohs45019\Documents\HAL\就職作品\Final_Project\x64\Release\Final_Project.exe
   Final_Project.vcxproj -> C:\Users\ohs45019\Documents\HAL\就職作品\Final_Project\x64\Release\Final_Project.pdb (Full PDB)

@@ -85,7 +85,7 @@ void CGameObjectBase::Initialize()
 	return;
 }
 
-void CGameObjectBase::Input()
+void CGameObjectBase::Input(CInput* input)
 {
 	//今は空
 }
@@ -193,18 +193,35 @@ void CGameObjectBase::GetRotation(float& x, float& y, float& z)
 //	戻り値
 //          なし
 //==============================================================================
-void CGameObjectBase::CalculateWorldMatrix(XMMATRIX& worldMatrix)
+void CGameObjectBase::CalculateWorldMatrix(XMMATRIX& worldMatrix, float rotX, float rotY, float rotZ)
 {
 	float yaw, pitch, roll;
 	XMMATRIX translationMatrix, rotationMatrix;
 
 	//yaw (Y軸), pitch (X軸), roll (Z軸) をラジアンに変換する
-	pitch = m_rotationX * XM_PI / 180.0f;
-	yaw = m_rotationY * XM_PI / 180.0f;
-	roll = m_rotationZ * XM_PI / 180.0f;
+	pitch = rotX * XM_PI / 180.0f;
+	yaw = rotY * XM_PI / 180.0f;
+	roll = rotZ * XM_PI / 180.0f;
 
 	//yaw, pitch, rollで回転行列を作成する
 	rotationMatrix = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
+
+	//移動行列
+	translationMatrix = XMMatrixTranslation(m_positionX, m_positionY, m_positionZ);
+
+	//ワールド行列を求める
+	worldMatrix = rotationMatrix * translationMatrix;
+
+	return;
+}
+
+void CGameObjectBase::CalculateWorldMatrix(XMMATRIX& worldMatrix, XMVECTOR quaternion)
+{
+	float yaw, pitch, roll;
+	XMMATRIX translationMatrix, rotationMatrix;
+
+	//yaw, pitch, rollで回転行列を作成する
+	rotationMatrix = XMMatrixRotationQuaternion(quaternion);
 
 	//移動行列
 	translationMatrix = XMMatrixTranslation(m_positionX, m_positionY, m_positionZ);
@@ -243,7 +260,32 @@ CGameObjectBase* CGameObjectBase::GetNextObj(void)
 	return m_pNextObj;
 }
 
+XMFLOAT3 CGameObjectBase::GetRotX()
+{
+	XMFLOAT4X4 tempMat;
 
+	XMStoreFloat4x4(&tempMat, m_matrix);
+
+	return (XMFLOAT3(tempMat._11,tempMat._12 ,tempMat._13 ));
+}
+
+XMFLOAT3 CGameObjectBase::GetRotY()
+{
+	XMFLOAT4X4 tempMat;
+
+	XMStoreFloat4x4(&tempMat, m_matrix);
+
+	return (XMFLOAT3(tempMat._21, tempMat._22, tempMat._23));
+}
+
+XMFLOAT3 CGameObjectBase::GetRotZ()
+{
+	XMFLOAT4X4 tempMat;
+
+	XMStoreFloat4x4(&tempMat, m_matrix);
+
+	return (XMFLOAT3(tempMat._31, tempMat._32, tempMat._33));
+}
 
 //******************************************************************************
 //	End of file.

@@ -9,8 +9,9 @@
 //	ヘッダー
 //-----------------------------------------------------------------------------
 # include "MoveStateBase.h"
-# include "CSackBase.h"
-# include "input.h"
+# include "SackBaseClass.h"
+# include "HitManager.h"
+//# include "input.h"
 
 //==============================================================================
 //!	@fn		Enter
@@ -35,8 +36,8 @@ void MoveStateBase::PostAction(CSackBase* sack)
 {
 	//落ち始めるか、上に何かと当たったら、fallingStateにする
 	if (sack->GetImpulse().y < 0 ||
-		HitManager::CheckStage(sack->hitUp) ||
-		HitManager::CheckHit(sack->hitUp, GAMEHIT_TYPE::HIT_SACK) != nullptr)
+		HitManager::CheckStage(sack->m_hitUp) ||
+		HitManager::CheckHit(sack->m_hitUp, GAMEHIT_TYPE::HIT_SACK) != nullptr)
 	{
 		sack->SetState(SACK_FALL);
 	}

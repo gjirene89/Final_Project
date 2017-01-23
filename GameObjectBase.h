@@ -13,6 +13,7 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include <fstream>
+# include "InputClass.h"
 
 using namespace std;
 using namespace DirectX;
@@ -69,7 +70,7 @@ public:
 	//virtual void Render(ID3D11DeviceContext* deviceContext, ID3D11Buffer* vertexBuffer);
 
 	virtual void Initialize(void);
-	virtual void Input(void);
+	virtual void Input(CInput* input);
 	virtual void Action(void);
 	virtual void PostAction(void);
 
@@ -79,7 +80,8 @@ public:
 	void GetPosition(float& x, float& y, float& z);
 	void GetRotation(float& x, float& y, float& z);
 
-	void CalculateWorldMatrix(XMMATRIX& worldMatrix);
+	void CalculateWorldMatrix(XMMATRIX& worldMatrix, float rotX, float rotY, float rotZ);
+	void CalculateWorldMatrix(XMMATRIX& worldMatrix, XMVECTOR quaternion);
 
 	//ポインタ用
 
@@ -112,6 +114,10 @@ public:
 	XMFLOAT3 GetLocalPos() { return m_localPos; };
 	XMFLOAT3 GetWorldPos() { return m_worldPos; };
 	XMMATRIX GetMatrix() { return m_matrix; };
+
+	XMFLOAT3 GetRotX(void);
+	XMFLOAT3 GetRotY(void);
+	XMFLOAT3 GetRotZ(void);
 };
 
 #endif

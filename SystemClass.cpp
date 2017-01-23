@@ -341,6 +341,7 @@ bool CSystem::Frame()
 		return false;
 	}
 	
+	m_Scene->Input(m_Input);
 	m_Scene->Action();
 	m_Scene->Render();
 	m_Scene->PostAction();

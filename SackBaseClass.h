@@ -23,6 +23,11 @@
 //# include "ModelManager.h"
 //# include "TextureManager.h"
 
+//==============================================================================
+//	マクロ定数
+//==============================================================================
+# define LOOK_ANGLE	(-30.0f * XM_PI / 180.0f)
+
 
 //==============================================================================
 //	クラス名		CSacksBase
@@ -40,25 +45,24 @@ public:
 
 
 	//あたり判定
-	CHit_Base	*hitCenter;						//中心
-	CHit_Base	*hitLeft;						//左
-	CHit_Base	*hitRight;						//右
-	CHit_Base	*hitUp;							//上
-	CHit_Base	*hitDown;						//下
-	CHit_Base	*hitRightOut;					//右（ジャンプ用）
-	CHit_Base	*hitLeftOut;					//左（ジャンプ用）
-	CHit_Base	*hitUpOut;						//上（連結用）
+	CHit_Base	*m_hitCenter;						//中心
+	CHit_Base	*m_hitLeft;						//左
+	CHit_Base	*m_hitRight;						//右
+	CHit_Base	*m_hitUp;							//上
+	CHit_Base	*m_hitDown;						//下
+	CHit_Base	*m_hitRightOut;					//右（ジャンプ用）
+	CHit_Base	*m_hitLeftOut;					//左（ジャンプ用）
+	CHit_Base	*m_hitUpOut;						//上（連結用）
 
-	CSackBase	*child_;				//ついている蹴鞠
+	CSackBase	*m_child;				//ついている蹴鞠
 
 
-	CSackBase(float posX, float posY, GAMEOBJTYPE gObj);	//コンストラクタ
 	~CSackBase(void);							//デストラクタ
 
 	virtual void Initialize(void);							//初期化関数
 	virtual void Action(void);							//処理関数
-//virtual void Input(void){};							//入力関数
-	virtual void Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix);							//描画関数
+	virtual void Input(CInput* input){};							//入力関数
+	virtual void Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix)=0;							//描画関数
 	virtual void PostAction(void);						//後処理関数
 
 	virtual void MoveRight(void);						//右へ移動
@@ -92,30 +96,37 @@ public:
 
 protected:
 
-	static int noSack;
-	int noId;
-	char nameId[256];
+	static int     m_noSack;
 
-	CModel* m_model;
+	static CModel* m_body;
+	static CModel* m_hook;
+
+	int            m_noId;
+	char           m_nameId[256];
+
 
 	//CRope *rope;
-	SackStateBase* state_;
+	SackStateBase* m_state;
 
 	//位置
-	XMFLOAT3		initPosition;		//初期位置
-	XMFLOAT3		position;			//現在位置
-	XMFLOAT3		oldPosition;		//前フレームの位置
+	XMFLOAT3		m_initPosition;		//初期位置
+	XMFLOAT3		m_position;			//現在位置
+	XMFLOAT3		m_oldPosition;		//前フレームの位置
 
-	float			initAngle;			//初期向いている方向
-	XMFLOAT3		orientation;		//向いている角度
+	float			m_initAngle;		//初期向いている方向
+	XMFLOAT3		m_orientation;		//向いている角度
 
-	XMFLOAT3		impulse;			//現在の移動力
-	XMFLOAT3		oldImpulse;			//前フレームの移動力
+	XMFLOAT3		m_impulse;			//現在の移動力
+	XMFLOAT3		m_oldImpulse;			//前フレームの移動力
 
-	SACK_DIR		stringDir;			//紐の向き
-	SACK_DIR		looking;			//向いている方向
-	SACK_DIR		hookDir;			//フックの向き
-	CSackBase		*parent;			//つながっている蹴鞠
+	SACK_DIR		m_stringDir;			//紐の向き
+	SACK_DIR		m_looking;			//向いている方向
+	SACK_DIR		m_hookDir;			//フックの向き
+	CSackBase*      m_parent;			//つながっている蹴鞠
+
+	CSackBase(float posX, float posY, GAMEOBJTYPE gObj);	//コンストラクタ
+	bool InitializeObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
+	void Shutdown(void);
 
 	void CreateMesh(void);				//メッシュの生成関数
 	void UpdateDisplacement(void);		//位置を更新する

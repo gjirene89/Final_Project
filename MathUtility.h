@@ -35,7 +35,7 @@ void SetSizeMatrix(XMMATRIX& mat, const XMFLOAT3 scale);
 //void SetProjectionMatrix(XMMATRIX mat);
 //XMMATRIX GetProjectionMatrix(void);
 //XMFLOAT3 GetScreenCoords(const XMFLOAT3& pos);
-XMFLOAT4 RotationArc(XMVECTOR& v0, XMVECTOR& v1, float& d);
+XMVECTOR RotationArc(XMVECTOR& v0, XMVECTOR& v1, float& d);
 
 #endif
 //******************************************************************************

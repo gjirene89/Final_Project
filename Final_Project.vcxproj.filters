@@ -9,10 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Header Files\ShaderClass">
       <UniqueIdentifier>{7eb4958e-78ac-4fb8-a3c5-241662d8c1e8}</UniqueIdentifier>
     </Filter>
@@ -48,6 +44,16 @@
     </Filter>
     <Filter Include="Source Files\Utility">
       <UniqueIdentifier>{ad2497a1-2e52-4b6e-8f38-1386a2c77f36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\PlayerSackState">
+      <UniqueIdentifier>{de457946-0ce1-4f86-900b-ef7541241c80}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shader Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\PlayerSackState">
+      <UniqueIdentifier>{e0b7a9f5-644d-40b7-a1ef-16d1ef509f56}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -141,6 +147,60 @@
     <ClInclude Include="HitManager.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="DashingStateBase.h">
+      <Filter>Header Files\SackState</Filter>
+    </ClInclude>
+    <ClInclude Include="FallingStateBase.h">
+      <Filter>Header Files\SackState</Filter>
+    </ClInclude>
+    <ClInclude Include="JumpingStateBase.h">
+      <Filter>Header Files\SackState</Filter>
+    </ClInclude>
+    <ClInclude Include="MidairStateBase.h">
+      <Filter>Header Files\SackState</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveStateBase.h">
+      <Filter>Header Files\SackState</Filter>
+    </ClInclude>
+    <ClInclude Include="NormalStateBase.h">
+      <Filter>Header Files\SackState</Filter>
+    </ClInclude>
+    <ClInclude Include="SackStateBase.h">
+      <Filter>Header Files\SackState</Filter>
+    </ClInclude>
+    <ClInclude Include="SackStateBaseHeaders.h">
+      <Filter>Header Files\SackState</Filter>
+    </ClInclude>
+    <ClInclude Include="P_DashingState.h">
+      <Filter>Header Files\PlayerSackState</Filter>
+    </ClInclude>
+    <ClInclude Include="P_FallingState.h">
+      <Filter>Header Files\PlayerSackState</Filter>
+    </ClInclude>
+    <ClInclude Include="P_FlipState.h">
+      <Filter>Header Files\PlayerSackState</Filter>
+    </ClInclude>
+    <ClInclude Include="P_JumpingState.h">
+      <Filter>Header Files\PlayerSackState</Filter>
+    </ClInclude>
+    <ClInclude Include="P_MidairState.h">
+      <Filter>Header Files\PlayerSackState</Filter>
+    </ClInclude>
+    <ClInclude Include="P_MoveState.h">
+      <Filter>Header Files\PlayerSackState</Filter>
+    </ClInclude>
+    <ClInclude Include="P_NormalState.h">
+      <Filter>Header Files\PlayerSackState</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerStateHeader.h">
+      <Filter>Header Files\PlayerSackState</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerState.h">
+      <Filter>Header Files\PlayerSackState</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerClass.h">
+      <Filter>Header Files\GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -227,25 +287,73 @@
     <ClCompile Include="SackBaseClass.cpp">
       <Filter>Source Files\GameObject</Filter>
     </ClCompile>
+    <ClCompile Include="SackStateBase.cpp">
+      <Filter>Source Files\SackState</Filter>
+    </ClCompile>
+    <ClCompile Include="NormalStateBase.cpp">
+      <Filter>Source Files\SackState</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveStateBase.cpp">
+      <Filter>Source Files\SackState</Filter>
+    </ClCompile>
+    <ClCompile Include="MidairStateBase.cpp">
+      <Filter>Source Files\SackState</Filter>
+    </ClCompile>
+    <ClCompile Include="JumpingStateBase.cpp">
+      <Filter>Source Files\SackState</Filter>
+    </ClCompile>
+    <ClCompile Include="FallingStateBase.cpp">
+      <Filter>Source Files\SackState</Filter>
+    </ClCompile>
+    <ClCompile Include="DashingStateBase.cpp">
+      <Filter>Source Files\SackState</Filter>
+    </ClCompile>
+    <ClCompile Include="P_DashingState.cpp">
+      <Filter>Source Files\PlayerSackState</Filter>
+    </ClCompile>
+    <ClCompile Include="P_FallingState.cpp">
+      <Filter>Source Files\PlayerSackState</Filter>
+    </ClCompile>
+    <ClCompile Include="P_FlipState.cpp">
+      <Filter>Source Files\PlayerSackState</Filter>
+    </ClCompile>
+    <ClCompile Include="P_JumpingState.cpp">
+      <Filter>Source Files\PlayerSackState</Filter>
+    </ClCompile>
+    <ClCompile Include="P_MidairState.cpp">
+      <Filter>Source Files\PlayerSackState</Filter>
+    </ClCompile>
+    <ClCompile Include="P_MoveState.cpp">
+      <Filter>Source Files\PlayerSackState</Filter>
+    </ClCompile>
+    <ClCompile Include="P_NormalState.cpp">
+      <Filter>Source Files\PlayerSackState</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerState.cpp">
+      <Filter>Source Files\PlayerSackState</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerClass.cpp">
+      <Filter>Source Files\GameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shader\Color.ps">
-      <Filter>Resource Files</Filter>
+      <Filter>Shader Files</Filter>
     </None>
     <None Include="Resources\Shader\Color.vs">
-      <Filter>Resource Files</Filter>
+      <Filter>Shader Files</Filter>
     </None>
     <None Include="Resources\Shader\Texture.ps">
-      <Filter>Resource Files</Filter>
+      <Filter>Shader Files</Filter>
     </None>
     <None Include="Resources\Shader\Texture.vs">
-      <Filter>Resource Files</Filter>
+      <Filter>Shader Files</Filter>
     </None>
     <None Include="Resources\Shader\BumpMap.ps">
-      <Filter>Resource Files</Filter>
+      <Filter>Shader Files</Filter>
     </None>
     <None Include="Resources\Shader\BumpMap.vs">
-      <Filter>Resource Files</Filter>
+      <Filter>Shader Files</Filter>
     </None>
   </ItemGroup>
 </Project>

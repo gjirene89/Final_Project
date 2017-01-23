@@ -25,10 +25,13 @@
 //# include "mathutil.h"
 
 
+
 //==============================================================================
 //	グローバル変数
 //==============================================================================
-int CSackBase::noSack = 0;
+int CSackBase::m_noSack = 0;
+CModel* CSackBase::m_body = nullptr;
+CModel* CSackBase::m_hook = nullptr;
 
 //==============================================================================
 //!	@fn		CSackBase
@@ -40,27 +43,27 @@ int CSackBase::noSack = 0;
 //==============================================================================
 CSackBase::CSackBase(float posX, float posY, GAMEOBJTYPE gObj) : CGameObjectBase(gObj)
 {
-	noId = ++noSack;
+	m_noId = ++m_noSack;
 
 	//色設定
 	//InitMaterial();
 
 	//位置の初期化
-	initPosition = { posX * BLOCK_SIZE, posY * BLOCK_SIZE + SACK_RADIUS, 0.0f };
-	position = oldPosition = initPosition;
+	m_initPosition = { posX * BLOCK_SIZE, posY * BLOCK_SIZE + SACK_RADIUS, 0.0f };
+	m_position = m_oldPosition = m_initPosition;
 
 	//rope = nullptr;
-	orientation = { 0,0,0 };
+	m_orientation = { 0,0,0 };
 
 	//当たり判定
-	hitCenter = new CHit_Box(SACK_RADIUS * 2.5, SACK_RADIUS * 2, SACK_RADIUS * 2, GAMEHIT_TYPE::HIT_SACK, this);
-	hitLeft = new CHit_Box(2, 2, 2, GAMEHIT_TYPE::HIT_SUPPORT, this);
-	hitRight = new CHit_Box(2, 2, 2, GAMEHIT_TYPE::HIT_SUPPORT, this);
-	hitUp = new CHit_Box(SACK_RADIUS, 2, 2, GAMEHIT_TYPE::HIT_SUPPORT, this);
-	hitDown = new CHit_Box(2, 2, 2, GAMEHIT_TYPE::HIT_SUPPORT, this);
-	hitRightOut = new CHit_Box(2, 2, 2, GAMEHIT_TYPE::HIT_SUPPORT, this);
-	hitLeftOut = new CHit_Box(2, 2, 2, GAMEHIT_TYPE::HIT_SUPPORT, this);
-	hitUpOut = new CHit_Box(2, 2, 2, GAMEHIT_TYPE::HIT_SUPPORT, this);
+	m_hitCenter = new CHit_Box(SACK_RADIUS * 2.5, SACK_RADIUS * 2, SACK_RADIUS * 2, GAMEHIT_TYPE::HIT_SACK, this);
+	m_hitLeft = new CHit_Box(2, 2, 2, GAMEHIT_TYPE::HIT_SUPPORT, this);
+	m_hitRight = new CHit_Box(2, 2, 2, GAMEHIT_TYPE::HIT_SUPPORT, this);
+	m_hitUp = new CHit_Box(SACK_RADIUS, 2, 2, GAMEHIT_TYPE::HIT_SUPPORT, this);
+	m_hitDown = new CHit_Box(2, 2, 2, GAMEHIT_TYPE::HIT_SUPPORT, this);
+	m_hitRightOut = new CHit_Box(2, 2, 2, GAMEHIT_TYPE::HIT_SUPPORT, this);
+	m_hitLeftOut = new CHit_Box(2, 2, 2, GAMEHIT_TYPE::HIT_SUPPORT, this);
+	m_hitUpOut = new CHit_Box(2, 2, 2, GAMEHIT_TYPE::HIT_SUPPORT, this);
 }
 
 //==============================================================================
@@ -74,17 +77,77 @@ CSackBase::~CSackBase()
 	//if (rope != nullptr)	delete rope;
 
 	//当たり判定のポインタを解放する
-	if (hitCenter != nullptr)		delete hitCenter;
-	if (hitRight != nullptr)		delete hitRight;
-	if (hitLeft != nullptr)		delete hitLeft;
-	if (hitDown != nullptr)		delete hitDown;
-	if (hitUp != nullptr)		delete hitUp;
-	if (hitRightOut != nullptr)		delete hitRightOut;
-	if (hitLeftOut != nullptr)		delete hitLeftOut;
+	if (m_hitCenter		!= nullptr)		delete m_hitCenter;
+	if (m_hitRight		!= nullptr)		delete m_hitRight;
+	if (m_hitLeft		!= nullptr)		delete m_hitLeft;
+	if (m_hitDown		!= nullptr)		delete m_hitDown;
+	if (m_hitUp			!= nullptr)		delete m_hitUp;
+	if (m_hitRightOut	!= nullptr)		delete m_hitRightOut;
+	if (m_hitLeftOut	!= nullptr)		delete m_hitLeftOut;
+}
+
+bool CSackBase::InitializeObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext)
+{
+	bool result;
+
+	//**************//
+	// 　蹴鞠の体　　	//
+	//**************//
+	m_body = new CModel;
+	if (!m_body)
+	{
+		return false;
+	}
+
+	result = m_body->Initialize(device, "Resources/Model/sack.txt");
+	if (!result)
+	{
+		return false;
+	}
+
+	m_body->LoadColorMap(device, deviceContext, "Resources/Texture/sackColor.tga");
+	m_body->LoadBumpMap(device, deviceContext, "Resources/Texture/sackNormal.tga");
+
+	//****************//
+	// 　蹴鞠のフック	  //
+	//****************//
+
+	m_hook = new CModel;
+	if (!m_hook)
+	{
+		return false;
+	}
+
+	result = m_hook->Initialize(device, "Resources/Model/hook.txt");
+	if (!result)
+	{
+		return false;
+	}
+
+	return true;
+}
+
+void CSackBase::Shutdown(void)
+{
+	if (m_body != nullptr)
+	{
+		m_body->Shutdown();
+		delete m_body;
+		m_body = nullptr;
+	}
+
+	if (m_hook != nullptr)
+	{
+		m_hook->Shutdown();
+		delete m_hook;
+		m_hook = nullptr;
+	}
+
+	return;
 }
 
 //==============================================================================
-//!	@fn		Init
+//!	@fn		Initialize
 //!	@brief	蹴鞠の初期化関数
 //!	@param	なし
 //!	@retval	なし
@@ -93,27 +156,32 @@ CSackBase::~CSackBase()
 void CSackBase::Initialize(void)
 {
 	//位置の初期化
-	position = oldPosition = initPosition;
-	impulse = { 0, 0, 0 };
+	m_position = m_oldPosition = m_initPosition;
+	m_impulse = { 0, 0, 0 };
 
-	m_matrix = XMMatrixRotationY(initAngle);
+	switch (m_looking)
+	{
+	case SACK_DIR_LEFT:
+		m_initAngle = -LOOK_ANGLE;
+		break;
+
+	case SACK_DIR_RIGHT:
+		m_initAngle = LOOK_ANGLE;
+		break;
+	}
+
+
+	m_orientation = { cos(m_initAngle), 0.0f, -sin(m_initAngle) };
+
+	m_matrix = XMMatrixRotationY(m_initAngle);
 	//D3DXMatrixRotationY(&matrix, initAngle);
-
-	XMFLOAT4X4 tempMatrix;
-
-	XMStoreFloat4x4(&tempMatrix, m_matrix);
-
-	//向いている方向
-	orientation.x = tempMatrix._11;
-	orientation.y = tempMatrix._12;
-	orientation.z = tempMatrix._13;
 
 	UpdateDisplacement();
 	//状態の初期化
-	state_ = state_->GetState(SackStateBase::SACK_NORMAL);
+	m_state = m_state->GetState(SackStateBase::SACK_NORMAL);
 	//親をヌルにする
-	parent = nullptr;
-	child_ = nullptr;
+	m_parent = nullptr;
+	m_child = nullptr;
 
 //	if (rope != nullptr)	rope->Init(matrix);
 }
@@ -128,11 +196,11 @@ void CSackBase::Initialize(void)
 void CSackBase::Action(void)
 {
 	//元の値をコピーする
-	oldPosition = position;
-	oldImpulse = impulse;
+	m_oldPosition = m_position;
+	m_oldImpulse = m_impulse;
 
 	//現在の状態の処理を呼び出す
-	state_->Action(this);
+	m_state->Action(this);
 
 	//移動
 	UpdateDisplacement();
@@ -149,36 +217,6 @@ void CSackBase::Action(void)
 }
 
 //==============================================================================
-//!	@fn		Render
-//!	@brief	蹴鞠の描画関数
-//!	@param	なし
-//!	@retval	なし
-//!	@note	
-//==============================================================================
-void CSackBase::Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix)
-{
-	if (!m_model)
-		return;
-
-	CalculateWorldMatrix(worldMatrix);
-	m_model->Render(deviceContext);
-
-	CShaderManager::getInstance().RenderTextureShader(deviceContext, m_model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_model->GetColorTexture());
-
-	//if (rope != nullptr) rope->Render();
-
-	//RenderDebug();
-
-
-	//C3DObject::Render();
-
-	/*
-	if (CDebug::displayAxis && !CDebug::GetIsHidden())
-		RenderAxis();
-		*/
-}
-
-//==============================================================================
 //!	@fn		PostAction
 //!	@brief	蹴鞠の後処理
 //!	@param	なし
@@ -188,7 +226,7 @@ void CSackBase::Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix,
 void CSackBase::PostAction(void)
 {
 	//if (rope != nullptr) rope->PostAction();
-	state_->PostAction(this);
+	m_state->PostAction(this);
 }
 
 //==============================================================================
@@ -200,21 +238,21 @@ void CSackBase::PostAction(void)
 //==============================================================================
 void CSackBase::MoveRight(void)
 {
-	state_ = state_->GetState(SackStateBase::SACK_MOVE);
+	m_state = m_state->GetState(SackStateBase::SACK_MOVE);
 
-	impulse.x = MOVE_FORCE;
-	impulse.y = JUMP_FORCE;
+	m_impulse.x = MOVE_FORCE;
+	m_impulse.y = JUMP_FORCE;
 
-	if (HitManager::CheckStage(hitRightOut))
+	if (HitManager::CheckStage(m_hitRightOut))
 	{
-		impulse.y = CLIMB_FORCE;
+		m_impulse.y = CLIMB_FORCE;
 		return;
 	}
 
-	CSackBase* tempObj = (CSackBase*)HitManager::CheckHit(hitRightOut, GAMEHIT_TYPE::HIT_SACK);
-	if (tempObj != nullptr && tempObj != parent)
+	CSackBase* tempObj = (CSackBase*)HitManager::CheckHit(m_hitRightOut, GAMEHIT_TYPE::HIT_SACK);
+	if (tempObj != nullptr && tempObj != m_parent)
 	{
-		impulse.y = CLIMB_FORCE;
+		m_impulse.y = CLIMB_FORCE;
 	}
 }
 
@@ -227,21 +265,21 @@ void CSackBase::MoveRight(void)
 //==============================================================================
 void CSackBase::MoveLeft(void)
 {
-	state_ = state_->GetState(SackStateBase::SACK_MOVE);
+	m_state = m_state->GetState(SackStateBase::SACK_MOVE);
 
-	impulse.x = -MOVE_FORCE;
-	impulse.y = JUMP_FORCE;
+	m_impulse.x = -MOVE_FORCE;
+	m_impulse.y = JUMP_FORCE;
 
-	if (HitManager::CheckStage(hitLeftOut))
+	if (HitManager::CheckStage(m_hitLeftOut))
 	{
-		impulse.y = CLIMB_FORCE;
+		m_impulse.y = CLIMB_FORCE;
 		return;
 	}
 
-	CSackBase* tempObj = (CSackBase*)HitManager::CheckHit(hitLeftOut, GAMEHIT_TYPE::HIT_SACK);
-	if (tempObj != nullptr && tempObj != parent)
+	CSackBase* tempObj = (CSackBase*)HitManager::CheckHit(m_hitLeftOut, GAMEHIT_TYPE::HIT_SACK);
+	if (tempObj != nullptr && tempObj != m_parent)
 	{
-		impulse.y = CLIMB_FORCE;
+		m_impulse.y = CLIMB_FORCE;
 	}
 
 }
@@ -255,9 +293,9 @@ void CSackBase::MoveLeft(void)
 //==============================================================================
 void CSackBase::Jump(void)
 {
-	state_ = state_->GetState(SackStateBase::SACK_JUMP);
-	impulse.x = 0;
-	impulse.y = CLIMB_FORCE;
+	m_state = m_state->GetState(SackStateBase::SACK_JUMP);
+	m_impulse.x = 0;
+	m_impulse.y = CLIMB_FORCE;
 }
 
 //==============================================================================
@@ -269,11 +307,11 @@ void CSackBase::Jump(void)
 //==============================================================================
 void CSackBase::Pull(void)
 {
-	if (parent == nullptr) return;
+	if (m_parent == nullptr) return;
 
-	float angle = CalculateAngle(position, parent->GetWorldPos());
+	float angle = CalculateAngle(m_position, m_parent->GetWorldPos());
 	float force = GetRopePullForce();
-	SackStateBase::SACK_STATE state = parent->GetState()->GetStateName();
+	SackStateBase::SACK_STATE state = m_parent->GetState()->GetStateName();
 
 	if (angle < -90.0f || angle > 110.0f)
 	{
@@ -304,7 +342,7 @@ void CSackBase::Pull(void)
 	switch (state)
 	{
 	case SackStateBase::SACK_JUMP:
-		if (CalculateDistance(position, parent->GetWorldPos()) > SACK_RADIUS * 3.0f)
+		if (CalculateDistance(m_position, m_parent->GetWorldPos()) > SACK_RADIUS * 3.0f)
 		{
 			if (angle > 50.0f && angle < 120.f)
 				Jump();
@@ -315,10 +353,10 @@ void CSackBase::Pull(void)
 
 	case SackStateBase::SACK_NORMAL:
 	case SackStateBase::SACK_MOVE:
-		if ((CalculateDistance(position, parent->GetWorldPos()) > SACK_RADIUS * 3.0f &&
-			parent->GetImpulse().x > 0 && angle < 70.0f) ||
-			(CalculateDistance(position, parent->GetWorldPos()) > SACK_RADIUS * 3.0f &&
-				parent->GetImpulse().x > 0 && angle < 90.0f))
+		if ((CalculateDistance(m_position, m_parent->GetWorldPos()) > SACK_RADIUS * 3.0f &&
+			m_parent->GetImpulse().x > 0 && angle < 70.0f) ||
+			(CalculateDistance(m_position, m_parent->GetWorldPos()) > SACK_RADIUS * 3.0f &&
+				m_parent->GetImpulse().x > 0 && angle < 90.0f))
 			MoveRight();
 		break;
 
@@ -326,7 +364,7 @@ void CSackBase::Pull(void)
 		if (force > 40.0f)
 		{
 			SetState(SackStateBase::SACK_DASH);
-			impulse.x = DASH_FORCE;
+			m_impulse.x = DASH_FORCE;
 		}
 		break;
 	}
@@ -341,26 +379,26 @@ void CSackBase::Pull(void)
 //==============================================================================
 void CSackBase::Chain(void)
 {
-	if (parent != nullptr)	return;
+	if (m_parent != nullptr)	return;
 
-	CSackBase* sack = (CSackBase*)HitManager::CheckHit(hitUpOut, GAMEHIT_TYPE::HIT_SACK);
+	CSackBase* sack = (CSackBase*)HitManager::CheckHit(m_hitUpOut, GAMEHIT_TYPE::HIT_SACK);
 
 	if (sack == nullptr)	return;
 
-	if (sack->GetStringDir() == hookDir && sack->child_ == nullptr)
+	if (sack->GetStringDir() == m_hookDir && sack->m_child == nullptr)
 	{
-		parent = sack;
-		parent->child_ = this;
+		m_parent = sack;
+		m_parent->m_child = this;
 	}
 }
 
 void CSackBase::ClearChain(void)
 {
-	if (stringDir == SACK_DIR_NONE)	return;
+	if (m_stringDir == SACK_DIR_NONE)	return;
 
 	//parent->rope->ClearLock();
-	parent->child_ = nullptr;
-	parent = nullptr;
+	m_parent->m_child = nullptr;
+	m_parent = nullptr;
 }
 
 //==============================================================================
@@ -372,13 +410,13 @@ void CSackBase::ClearChain(void)
 //==============================================================================
 void CSackBase::Slide(void)
 {
-	if (impulse.x > FRICTION)
-		impulse.x -= FRICTION;
+	if (m_impulse.x > FRICTION)
+		m_impulse.x -= FRICTION;
 
-	else if (impulse.x < -FRICTION)
-		impulse.x += FRICTION;
+	else if (m_impulse.x < -FRICTION)
+		m_impulse.x += FRICTION;
 
-	else impulse.x = 0;
+	else m_impulse.x = 0;
 }
 
 //==============================================================================
@@ -391,25 +429,25 @@ void CSackBase::Slide(void)
 void CSackBase::Dash(void)
 {
 	//右からぶっつかったら
-	CSackBase* tempObj = (CSackBase*)HitManager::CheckHit(hitRight, GAMEHIT_TYPE::HIT_SACK);
+	CSackBase* tempObj = (CSackBase*)HitManager::CheckHit(m_hitRight, GAMEHIT_TYPE::HIT_SACK);
 	if (tempObj != nullptr)
 	{
 		if (tempObj->GetState()->GetStateName() == SackStateBase::SACK_DASH)
 		{
-			impulse.x = -DASH_FORCE;
-			state_ = state_->GetState(SackStateBase::SACK_DASH);
+			m_impulse.x = -DASH_FORCE;
+			m_state = m_state->GetState(SackStateBase::SACK_DASH);
 		}
 		return;
 	}
 
 	//左からぶっつかる場合
-	tempObj = (CSackBase*)HitManager::CheckHit(hitLeft, GAMEHIT_TYPE::HIT_SACK);
+	tempObj = (CSackBase*)HitManager::CheckHit(m_hitLeft, GAMEHIT_TYPE::HIT_SACK);
 	if (tempObj != nullptr)
 	{
 		if (tempObj->GetState()->GetStateName() == SackStateBase::SACK_DASH)
 		{
-			impulse.x = DASH_FORCE;
-			state_ = state_->GetState(SackStateBase::SACK_DASH);
+			m_impulse.x = DASH_FORCE;
+			m_state = m_state->GetState(SackStateBase::SACK_DASH);
 		}
 		return;
 	}
@@ -425,21 +463,21 @@ void CSackBase::Dash(void)
 void CSackBase::HitWall(void)
 {
 	//壁にはまっている場合
-	if (abs(impulse.x) < 1.0f)
+	if (abs(m_impulse.x) < 1.0f)
 		LeaveWall();
 	else
 	{
-		switch (looking)
+		switch (m_looking)
 		{
 		case SACK_DIR_LEFT:
-			if (HitManager::CheckStage(hitLeft) || HitManager::CheckHit(hitLeft, GAMEHIT_TYPE::HIT_SACK))
+			if (HitManager::CheckStage(m_hitLeft) || HitManager::CheckHit(m_hitLeft, GAMEHIT_TYPE::HIT_SACK))
 			{
 				ResetPositionX();
 			}
 			break;
 
 		case SACK_DIR_RIGHT:
-			if (HitManager::CheckStage(hitRight) || HitManager::CheckHit(hitRight, GAMEHIT_TYPE::HIT_SACK))
+			if (HitManager::CheckStage(m_hitRight) || HitManager::CheckHit(m_hitRight, GAMEHIT_TYPE::HIT_SACK))
 			{
 				ResetPositionX();
 			}
@@ -457,12 +495,12 @@ void CSackBase::HitWall(void)
 //==============================================================================
 void CSackBase::LeaveWall(void)
 {
-	if (HitManager::CheckStage(hitCenter) || HitManager::CheckHit(hitCenter, GAMEHIT_TYPE::HIT_SACK))
+	if (HitManager::CheckStage(m_hitCenter) || HitManager::CheckHit(m_hitCenter, GAMEHIT_TYPE::HIT_SACK))
 	{
-		if (HitManager::CheckStage(hitRight) || HitManager::CheckHit(hitRight, GAMEHIT_TYPE::HIT_SACK))
-			position.x -= 0.25f;
-		else if (HitManager::CheckStage(hitLeft) || HitManager::CheckHit(hitLeft, GAMEHIT_TYPE::HIT_SACK))
-			position.x += 0.25f;
+		if (HitManager::CheckStage(m_hitRight) || HitManager::CheckHit(m_hitRight, GAMEHIT_TYPE::HIT_SACK))
+			m_position.x -= 0.25f;
+		else if (HitManager::CheckStage(m_hitLeft) || HitManager::CheckHit(m_hitLeft, GAMEHIT_TYPE::HIT_SACK))
+			m_position.x += 0.25f;
 	}
 }
 
@@ -476,8 +514,8 @@ void CSackBase::LeaveWall(void)
 //==============================================================================
 void CSackBase::CleanNumbers(void)
 {
-	CStage::CleanNumbers(nullptr, &position.y);
-	position.y += SACK_RADIUS;
+	CStage::CleanNumbers(nullptr, &m_position.y);
+	m_position.y += SACK_RADIUS;
 }
 
 //==============================================================================
@@ -489,7 +527,7 @@ void CSackBase::CleanNumbers(void)
 //==============================================================================
 void CSackBase::ResetPositionX(void)
 {
-	position.x = oldPosition.x;
+	m_position.x = m_oldPosition.x;
 }
 
 //==============================================================================
@@ -501,7 +539,7 @@ void CSackBase::ResetPositionX(void)
 //==============================================================================
 void CSackBase::ResetPositionY(void)
 {
-	position.y = oldPosition.y;
+	m_position.y = m_oldPosition.y;
 }
 
 //==============================================================================
@@ -512,7 +550,7 @@ void CSackBase::ResetPositionY(void)
 //==============================================================================
 CSackBase* CSackBase::GetParent(void)
 {
-	return parent;
+	return m_parent;
 }
 
 //==============================================================================
@@ -523,7 +561,7 @@ CSackBase* CSackBase::GetParent(void)
 //==============================================================================
 XMFLOAT3 CSackBase::GetImpulse(void)
 {
-	return oldImpulse;
+	return m_oldImpulse;
 }
 
 //==============================================================================
@@ -534,7 +572,7 @@ XMFLOAT3 CSackBase::GetImpulse(void)
 //==============================================================================
 float CSackBase::GetRopePullForce(void)
 {
-	if (parent == nullptr)
+	if (m_parent == nullptr)
 		return 0;
 	//return parent->rope->GetPullForce();
 	return 0;
@@ -548,7 +586,7 @@ float CSackBase::GetRopePullForce(void)
 //==============================================================================
 float CSackBase::GetRopePullAngle(void)
 {
-	if (parent == nullptr)
+	if (m_parent == nullptr)
 		return 0;
 
 	//return parent->rope->GetPullAngle();
@@ -564,7 +602,7 @@ float CSackBase::GetRopePullAngle(void)
 //==============================================================================
 CSackBase::SACK_DIR CSackBase::GetStringDir(void)
 {
-	return stringDir;
+	return m_stringDir;
 }
 
 //==============================================================================
@@ -576,7 +614,7 @@ CSackBase::SACK_DIR CSackBase::GetStringDir(void)
 //==============================================================================
 CSackBase::SACK_DIR CSackBase::GetLookingDir(void)
 {
-	return looking;
+	return m_looking;
 }
 
 //==============================================================================
@@ -588,7 +626,7 @@ CSackBase::SACK_DIR CSackBase::GetLookingDir(void)
 //==============================================================================
 CSackBase::SACK_DIR CSackBase::GetHookDir(void)
 {
-	return hookDir;
+	return m_hookDir;
 }
 //==============================================================================
 //!	@fn		AddImpulse
@@ -599,8 +637,8 @@ CSackBase::SACK_DIR CSackBase::GetHookDir(void)
 //==============================================================================
 void CSackBase::AddImpulse(float impulseX, float impulseY)
 {
-	impulse.x += impulseX;
-	impulse.y += impulseY;
+	m_impulse.x += impulseX;
+	m_impulse.y += impulseY;
 }
 
 //==============================================================================
@@ -612,7 +650,7 @@ void CSackBase::AddImpulse(float impulseX, float impulseY)
 //==============================================================================
 void CSackBase::SetImpulseX(float impulseX)
 {
-	impulse.x = impulseX;
+	m_impulse.x = impulseX;
 }
 
 //==============================================================================
@@ -624,7 +662,7 @@ void CSackBase::SetImpulseX(float impulseX)
 //==============================================================================
 void CSackBase::SetImpulseY(float impulseY)
 {
-	impulse.y = impulseY;
+	m_impulse.y = impulseY;
 }
 
 //==============================================================================
@@ -636,10 +674,10 @@ void CSackBase::SetImpulseY(float impulseY)
 //==============================================================================
 void CSackBase::SetState(SackStateBase::SACK_STATE stateName)
 {
-	state_ = state_->GetState(stateName);
+	m_state = m_state->GetState(stateName);
 
 	//開始関数を呼び出す
-	state_->Enter(this);
+	m_state->Enter(this);
 }
 
 //==============================================================================
@@ -667,13 +705,13 @@ void CSackBase::CreateMesh(void)
 void CSackBase::UpdateDisplacement(void)
 {
 	//フレームのスピードを落とす
-	position.y += impulse.y / 15.0f;
-	position.x += impulse.x / 15.0f;
+	m_position.y += m_impulse.y / 15.0f;
+	m_position.x += m_impulse.x / 15.0f;
 
 	//マトリックスの更新
-	m_positionX = position.x;
-	m_positionY = position.y;
-	m_positionZ = position.z;
+	m_positionX = m_position.x;
+	m_positionY = m_position.y;
+	m_positionZ = m_position.z;
 
 }
 
@@ -686,23 +724,23 @@ void CSackBase::UpdateDisplacement(void)
 //==============================================================================
 void CSackBase::UpdateHit(void)
 {
-	hitCenter->UpdatePosition(position);
-	hitLeft->UpdatePosition({ position.x - SACK_RADIUS, position.y, position.z });
-	hitRight->UpdatePosition({ position.x + SACK_RADIUS, position.y, position.z });
-	hitUp->UpdatePosition({ position.x, position.y + SACK_RADIUS, position.z });
-	hitDown->UpdatePosition({ position.x, position.y - SACK_RADIUS, position.z });
-	hitRightOut->UpdatePosition({ position.x + SACK_RADIUS * 2, position.y, position.z });
-	hitLeftOut->UpdatePosition({ position.x - SACK_RADIUS * 2, position.y, position.z });
-	hitUpOut->UpdatePosition({ position.x, position.y + SACK_RADIUS * 2, position.z });
+	m_hitCenter->UpdatePosition(m_position);
+	m_hitLeft->UpdatePosition(    { m_position.x - SACK_RADIUS,     m_position.y,                   m_position.z });
+	m_hitRight->UpdatePosition(   { m_position.x + SACK_RADIUS,     m_position.y,                   m_position.z });
+	m_hitUp->UpdatePosition(      { m_position.x,                   m_position.y + SACK_RADIUS,     m_position.z });
+	m_hitDown->UpdatePosition(    { m_position.x,                   m_position.y - SACK_RADIUS,     m_position.z });
+	m_hitRightOut->UpdatePosition({ m_position.x + SACK_RADIUS * 2, m_position.y,                   m_position.z });
+	m_hitLeftOut->UpdatePosition( { m_position.x - SACK_RADIUS * 2, m_position.y,                   m_position.z });
+	m_hitUpOut->UpdatePosition(   { m_position.x,                   m_position.y + SACK_RADIUS * 2, m_position.z });
 
-	HitManager::AddHit(hitCenter);
-	HitManager::AddHit(hitRight);
-	HitManager::AddHit(hitLeft);
-	HitManager::AddHit(hitUp);
-	HitManager::AddHit(hitDown);
-	HitManager::AddHit(hitRightOut);
-	HitManager::AddHit(hitLeftOut);
-	HitManager::AddHit(hitUpOut);
+	HitManager::AddHit(m_hitCenter);
+	HitManager::AddHit(m_hitRight);
+	HitManager::AddHit(m_hitLeft);
+	HitManager::AddHit(m_hitUp);
+	HitManager::AddHit(m_hitDown);
+	HitManager::AddHit(m_hitRightOut);
+	HitManager::AddHit(m_hitLeftOut);
+	HitManager::AddHit(m_hitUpOut);
 
 }
 
@@ -748,7 +786,7 @@ void CSackBase::RenderDebug(void)
 
 SackStateBase* CSackBase::GetState(void)
 {
-	return state_;
+	return m_state;
 }
 
 XMFLOAT3 CSackBase::GetHookPos(void)
@@ -757,8 +795,8 @@ XMFLOAT3 CSackBase::GetHookPos(void)
 	XMFLOAT4X4 hookMatTemp;
 
 	hookMatrix = XMMatrixTranslation(0, SACK_RADIUS, 7);
-	transMatrix = XMMatrixTranslation(position.x, position.y, position.z);
-	rotMatrix = XMMatrixRotationY(initAngle);
+	transMatrix = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
+	rotMatrix = XMMatrixRotationY(m_initAngle);
 
 	hookMatrix = hookMatrix * rotMatrix * transMatrix;
 

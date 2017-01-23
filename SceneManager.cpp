@@ -25,7 +25,7 @@ CScene* CScene::m_titleScene     = nullptr;
 CScene* CScene::m_gameScene      = nullptr;
 CScene* CScene::m_gameClearScene = nullptr;
 
-CDirect3D* CScene::m_Direct3D = nullptr;
+CDirect3D*  CScene::m_Direct3D = nullptr;
 
 //==============================================================================
 //	関数名		InitializeSceneManager
@@ -57,6 +57,7 @@ bool CScene::InitializeSceneManager(int screenWidth, int screenHeight, HWND hwnd
 		return false;
 	}
 
+	//シェーダー管理者の初期化
 	CShaderManager::getInstance().Initialize(m_Direct3D->GetDevice(), hwnd);
 
 	return true;
@@ -93,14 +94,14 @@ bool CScene::Initialize()
 //	戻り値
 //          なし
 //==============================================================================
-void CScene::Input()
+void CScene::Input(CInput* input)
 {
 	CGameObjectBase* tempObj;
 	tempObj = objArray;
 
 	while (tempObj)
 	{
-		tempObj->Input();
+		tempObj->Input(input);
 		tempObj = tempObj->GetNextObj();
 	}
 	return;

@@ -48,9 +48,7 @@ public:
 	void Shutdown();
 
 	void Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix); //ï`âÊä÷êî
-
-																														   //BLOCK_COLOR GetColor(void);
-
+	
 private:
 
 	//BLOCK_COLOR m_color;

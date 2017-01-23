@@ -8,20 +8,18 @@
 #ifndef __GM31_SACK_STATE_BASE__
 #define __GM31_SACK_STATE_BASE__
 
-//-----------------------------------------------------------------------------
-//	ヘッダー
-//-----------------------------------------------------------------------------
+//=======================================================================//
+//		インクルード
+//=======================================================================//
 //# include "CSackBase.h"
-//# include "input.h"
+# include "InputClass.h"
 # include <stdio.h>
-//# include "CSackBase.h"
 
 class CSackBase;
 
-//=============================================================================
-//!	@class	SackStateBase
-//!	@brief 蹴鞠の状態ベースクラス
-//=============================================================================
+//=======================================================================//
+//	クラス名		SackStateBase
+//=======================================================================//
 class SackStateBase
 {
 
@@ -40,15 +38,16 @@ public:
 
 	};
 
-	SackStateBase() {};
-	SackStateBase(SACK_STATE state) { stateName = state; };
-	virtual ~SackStateBase();								//デストラクタ
+	SackStateBase(void);
+	SackStateBase(const SackStateBase& other) {};
+	SackStateBase(SACK_STATE state) { m_stateName = state; };
+	virtual ~SackStateBase(void);								//デストラクタ
 
 	virtual SackStateBase* GetState(SACK_STATE stateName);
-	SACK_STATE GetStateName(void) { return stateName; };
+	SACK_STATE GetStateName(void) { return m_stateName; };
 
 	virtual void Enter(CSackBase* sack) {};					//開始関数
-	virtual void Input(CSackBase* sack) {};					//入力関数
+	virtual void Input(CInput* input, CSackBase* sack) {};					//入力関数
 	virtual void Action(CSackBase* sack) {};					//処理関数
 	virtual void PostAction(CSackBase* sack) {};				//後処理関数
 
@@ -56,18 +55,18 @@ public:
 
 protected:
 
-	SACK_STATE stateName;
+	SACK_STATE m_stateName;
 
 private:
 
-	static SackStateBase* normalState;
-	static SackStateBase* fallingState;
-	static SackStateBase* dashState;
-	static SackStateBase* moveState;
-	static SackStateBase* jumpState;
+	static SackStateBase* m_normalState;
+	static SackStateBase* m_fallingState;
+	static SackStateBase* m_dashState;
+	static SackStateBase* m_moveState;
+	static SackStateBase* m_jumpState;
+	
+	static bool m_isInitialized;
 
-	void InitializeStates();
-	static bool isInitialized;
 };
 
 #endif

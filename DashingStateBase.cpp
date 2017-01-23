@@ -9,7 +9,8 @@
 //	ƒwƒbƒ_[
 //-----------------------------------------------------------------------------
 # include "DashingStateBase.h"
-# include "CSackBase.h"
+# include "SackBaseClass.h"
+# include "HitManager.h"
 
 //==============================================================================
 //!	@fn		Enter
@@ -52,8 +53,8 @@ void DashingStateBase::PostAction(CSackBase* sack)
 
 	if (sack->GetImpulse().x > 0)
 	{
-		if (HitManager::CheckStage(sack->hitRight) ||
-			HitManager::CheckHit(sack->hitRight, GAMEHIT_TYPE::HIT_SACK))
+		if (HitManager::CheckStage(sack->m_hitRight) ||
+			HitManager::CheckHit(sack->m_hitRight, GAMEHIT_TYPE::HIT_SACK))
 		{
 			sack->SetImpulseX(0);
 			sack->ResetPositionX();
@@ -63,8 +64,8 @@ void DashingStateBase::PostAction(CSackBase* sack)
 
 	if (sack->GetImpulse().x < 0)
 	{
-		if (HitManager::CheckStage(sack->hitLeft) ||
-			HitManager::CheckHit(sack->hitLeft, GAMEHIT_TYPE::HIT_SACK))
+		if (HitManager::CheckStage(sack->m_hitLeft) ||
+			HitManager::CheckHit(sack->m_hitLeft, GAMEHIT_TYPE::HIT_SACK))
 		{
 			sack->SetImpulseX(0);
 			sack->ResetPositionX();

@@ -112,7 +112,7 @@ D3DXVec3TransformCoord(&ans, &pos, &mat);
 return ans;
 }
 */
-XMFLOAT4 RotationArc(XMVECTOR& v0, XMVECTOR& v1, float& d)
+XMVECTOR RotationArc(XMVECTOR& v0, XMVECTOR& v1, float& d)
 {
 	XMVECTOR axis;
 	XMVECTOR dotProduct;
@@ -139,7 +139,9 @@ XMFLOAT4 RotationArc(XMVECTOR& v0, XMVECTOR& v1, float& d)
 	q.z = q.z / s;
 	q.w = s / 2;
 
-	return q;
+	axis = XMLoadFloat4(&q);
+
+	return axis;
 }
 
 

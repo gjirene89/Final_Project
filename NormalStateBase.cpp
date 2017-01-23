@@ -9,10 +9,12 @@
 //	ヘッダー
 //-----------------------------------------------------------------------------
 # include "NormalStateBase.h"
-# include "CSackBase.h"
-# include "input.h"
-# include "CPlayer.h"
-# include "mathutil.h"
+# include "SackBaseClass.h"
+//# include "input.h"
+# include "PlayerClass.h"
+# include "MathUtility.h"
+# include "HitManager.h"
+# include "Macros.h"
 
 //==============================================================================
 //!	@fn		Action
@@ -38,8 +40,8 @@ void NormalStateBase::Action(CSackBase* sack)
 void NormalStateBase::PostAction(CSackBase* sack)
 {
 	//下に何もなければ、落下させる
-	if (!HitManager::CheckStage(sack->hitDown) &&
-		HitManager::CheckHit(sack->hitDown, GAMEHIT_TYPE::HIT_SACK) == nullptr)
+	if (!HitManager::CheckStage(sack->m_hitDown) &&
+		HitManager::CheckHit(sack->m_hitDown, GAMEHIT_TYPE::HIT_SACK) == nullptr)
 	{
 		if (sack->GetParent() == nullptr)
 		{
@@ -53,10 +55,10 @@ void NormalStateBase::PostAction(CSackBase* sack)
 	}
 
 	//何かとぶつかったら、動きが止まる
-	if (HitManager::CheckStage(sack->hitLeft) ||
-		HitManager::CheckStage(sack->hitRight) ||
-		HitManager::CheckHit(sack->hitLeft, GAMEHIT_TYPE::HIT_SACK) ||
-		HitManager::CheckHit(sack->hitRight, GAMEHIT_TYPE::HIT_SACK))
+	if (HitManager::CheckStage(sack->m_hitLeft) ||
+		HitManager::CheckStage(sack->m_hitRight) ||
+		HitManager::CheckHit(sack->m_hitLeft, GAMEHIT_TYPE::HIT_SACK) ||
+		HitManager::CheckHit(sack->m_hitRight, GAMEHIT_TYPE::HIT_SACK))
 	{
 		sack->SetImpulseX(0);
 		sack->ResetPositionX();

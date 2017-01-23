@@ -39,16 +39,14 @@ public:
 
 	bool IsEnterTriggered(void);
 	bool IsEscapePressed(void);
-	bool IsLeftArrowPressed(void);
-	bool IsRightArrowPressed(void);
-	bool IsUpArrowPressed(void);
-	bool IsDownArrowPressed(void);
-	bool IsAPressed(void);
-	bool IsSPressed(void);
-	bool IsWPressed(void);
-	bool IsDPressed(void);
-	bool IsQPressed(void);
-	bool IsEPressed(void);
+	bool IsLeftPressed(void);
+	bool IsRightPressed(void);
+	bool IsUpPressed(void);
+	bool IsDownPressed(void);
+
+	bool IsDashTriggered(void);
+	bool IsFlipTriggered(void);
+	
 	bool IsF1Pressed(void);
 
 	void GetMouseLocation(int&, int&);

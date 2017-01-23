@@ -9,8 +9,10 @@
 //	ƒwƒbƒ_|
 //-----------------------------------------------------------------------------
 # include "FallingStateBase.h"
-# include "CSackBase.h"
-# include "mathutil.h"
+# include "SackBaseClass.h"
+# include "MathUtility.h"
+# include "HitManager.h"
+# include "Macros.h"
 
 //==============================================================================
 //!	@fn		Enter
@@ -47,13 +49,13 @@ void FallingStateBase::PostAction(CSackBase* sack)
 {
 
 	//‰º‚É‰½‚É‚ª‚ ‚Á‚½‚çAnormalState‚É‚·‚é
-	if (HitManager::CheckStage(sack->hitDown))
+	if (HitManager::CheckStage(sack->m_hitDown))
 	{
 		sack->SetImpulseY(0.0f);
 		sack->CleanNumbers();
 		sack->SetState(SACK_NORMAL);
 	}
-	else if (HitManager::CheckHit(sack->hitDown, GAMEHIT_TYPE::HIT_SACK))
+	else if (HitManager::CheckHit(sack->m_hitDown, GAMEHIT_TYPE::HIT_SACK))
 	{
 		sack->SetImpulseY(0.0f);
 		sack->SetState(SACK_NORMAL);

@@ -40,7 +40,7 @@ CGameScene::CGameScene()
 //==============================================================================
 bool CGameScene::Initialize()
 {
-	m_Camera->SetPosition(150, 50, -200);
+	m_Camera->SetPosition(50, 50, -50);
 
 	CScene::Initialize();
 
@@ -76,6 +76,7 @@ CScene* CGameScene::ChangeScene(bool isChange)
 bool CGameScene::LoadScene(void)
 {
 	bool result;
+	CGameObjectBase* tempObj;
 
 	//カメラオブジェクトの生成
 	m_Camera = new CCamera;
@@ -86,14 +87,33 @@ bool CGameScene::LoadScene(void)
 
 	//オブジェクトの追加
 	objArray = new CStage();
-
-	result = objArray->InitializeObject(m_Direct3D->GetDevice(), m_Direct3D->GetDeviceContext());// , "Resources/Model/square.txt");
-	if (!result)
+	if (objArray == nullptr)
 	{
 		//error message
 		return false;
 	}
+
+	objArray->SetNextObj(new CPlayer(4,5));
+	tempObj = objArray->GetNextObj();
+	if(tempObj == nullptr)
+	{
+		//error message
+		return false;
+	}
+		
 	//objArray->LoadColorMap(m_Direct3D->GetDevice(), m_Direct3D->GetDeviceContext(), "Resources/Texture/sun.tga");
+
+	tempObj = objArray;
+	while (tempObj)
+	{
+		result = tempObj->InitializeObject(m_Direct3D->GetDevice(), m_Direct3D->GetDeviceContext());
+		if (!result)
+		{
+			//error message
+			return false;
+		}
+		tempObj = tempObj->GetNextObj();
+	}
 
 	return true;
 

@@ -86,7 +86,7 @@ void  CBlock::Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, X
 
 	//TranslateMatrix(worldMatrix, XMFLOAT3(m_positionX, m_positionY, m_positionZ));
 
-	CalculateWorldMatrix(worldMatrix);
+	CalculateWorldMatrix(worldMatrix, m_rotationX, m_rotationY, m_rotationZ);
 	m_model->Render(deviceContext);// , worldMatrix, viewMatrix, projectionMatrix);
 								   //CShaderManager::getInstance().RenderBumpMapShader(deviceContext, m_model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_model->GetColorTexture(), m_model->GetBumpTexture(), );
 	CShaderManager::getInstance().RenderTextureShader(deviceContext, m_model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_model->GetColorTexture());
