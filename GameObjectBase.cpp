@@ -8,7 +8,7 @@
 //		インクルード
 //=======================================================================//
 #include "GameObjectBase.h"
-#include "ShaderManagerClass.h"
+#include "ShaderManager.h"
 
 //==============================================================================
 //  関数名        CGameObjectBase	
@@ -25,13 +25,13 @@ CGameObjectBase::CGameObjectBase()
 	m_isHidden = false;
 	m_pNextObj = nullptr;
 
-	m_positionX = 0;
-	m_positionY = 0;
-	m_positionZ = 0;
+	m_position.x = 0;
+	m_position.y = 0;
+	m_position.z = 0;
 
-	m_rotationX = 0;
-	m_rotationY = 0;
-	m_rotationZ = 0;
+	m_rotation.x = 0;
+	m_rotation.y = 0;
+	m_rotation.z = 0;
 
 }
 
@@ -42,13 +42,13 @@ CGameObjectBase::CGameObjectBase(GAMEOBJTYPE objType)
 	m_isHidden = false;
 	m_pNextObj = nullptr;
 
-	m_positionX = 0;
-	m_positionY = 0;
-	m_positionZ = 0;
+	m_position.x = 0;
+	m_position.y = 0;
+	m_position.z = 0;
 
-	m_rotationX = 0;
-	m_rotationY = 0;
-	m_rotationZ = 0;
+	m_rotation.x = 0;
+	m_rotation.y = 0;
+	m_rotation.z = 0;
 }
 
 //==============================================================================
@@ -114,9 +114,9 @@ void CGameObjectBase::PostAction()
 //==============================================================================
 void CGameObjectBase::SetPosition(float x, float y, float z)
 {
-	m_positionX = x;
-	m_positionY = y;
-	m_positionZ = z;
+	m_position.x = x;
+	m_position.y = y;
+	m_position.z = z;
 
 	return;
 }
@@ -134,9 +134,9 @@ void CGameObjectBase::SetPosition(float x, float y, float z)
 //==============================================================================
 void CGameObjectBase::SetRotation(float x, float y, float z)
 {
-	m_rotationX = x;
-	m_rotationY = y;
-	m_rotationZ = z;
+	m_rotation.x = x;
+	m_rotation.y = y;
+	m_rotation.z = z;
 
 	return;
 }
@@ -155,9 +155,9 @@ void CGameObjectBase::SetRotation(float x, float y, float z)
 //==============================================================================
 void CGameObjectBase::GetPosition(float& x, float& y, float& z)
 {
-	x = m_positionX;
-	y = m_positionY;
-	z = m_positionZ;
+	x = m_position.x;
+	y = m_position.y;
+	z = m_position.z;
 
 	return;
 }
@@ -175,9 +175,9 @@ void CGameObjectBase::GetPosition(float& x, float& y, float& z)
 //==============================================================================
 void CGameObjectBase::GetRotation(float& x, float& y, float& z)
 {
-	x = m_rotationX;
-	y = m_rotationY;
-	z = m_rotationZ;
+	x = m_rotation.x;
+	y = m_rotation.y;
+	z = m_rotation.z;
 
 	return;
 }
@@ -207,7 +207,7 @@ void CGameObjectBase::CalculateWorldMatrix(XMMATRIX& worldMatrix, float rotX, fl
 	rotationMatrix = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
 
 	//移動行列
-	translationMatrix = XMMatrixTranslation(m_positionX, m_positionY, m_positionZ);
+	translationMatrix = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
 
 	//ワールド行列を求める
 	worldMatrix = rotationMatrix * translationMatrix;
@@ -224,7 +224,7 @@ void CGameObjectBase::CalculateWorldMatrix(XMMATRIX& worldMatrix, XMVECTOR quate
 	rotationMatrix = XMMatrixRotationQuaternion(quaternion);
 
 	//移動行列
-	translationMatrix = XMMatrixTranslation(m_positionX, m_positionY, m_positionZ);
+	translationMatrix = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
 
 	//ワールド行列を求める
 	worldMatrix = rotationMatrix * translationMatrix;

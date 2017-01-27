@@ -12,7 +12,7 @@
 # include "Macros.h"
 # include "HitBoxClass.h"
 # include "HitSphereClass.h"
-# include "ShaderManagerClass.h"
+# include "ShaderManager.h"
 # include "HitManager.h"
 # include "MathUtility.h"
 # include "StageClass.h"
@@ -33,6 +33,9 @@ int CSackBase::m_noSack = 0;
 CModel* CSackBase::m_body = nullptr;
 CModel* CSackBase::m_hook = nullptr;
 
+CTexture* CSackBase::m_colorTexture = nullptr;
+CTexture* CSackBase::m_bumpTexture = nullptr;
+
 //==============================================================================
 //!	@fn		CSackBase
 //!	@brief	蹴鞠べースのコンストラクタ
@@ -44,15 +47,13 @@ CModel* CSackBase::m_hook = nullptr;
 CSackBase::CSackBase(float posX, float posY, GAMEOBJTYPE gObj) : CGameObjectBase(gObj)
 {
 	m_noId = ++m_noSack;
-
-	//色設定
-	//InitMaterial();
+	m_animBody = nullptr;	
 
 	//位置の初期化
 	m_initPosition = { posX * BLOCK_SIZE, posY * BLOCK_SIZE + SACK_RADIUS, 0.0f };
 	m_position = m_oldPosition = m_initPosition;
 
-	//rope = nullptr;
+	m_rope = nullptr;
 	m_orientation = { 0,0,0 };
 
 	//当たり判定
@@ -93,20 +94,50 @@ bool CSackBase::InitializeObject(ID3D11Device* device, ID3D11DeviceContext* devi
 	//**************//
 	// 　蹴鞠の体　　	//
 	//**************//
-	m_body = new CModel;
+	m_body = new CModel[MODEL_MAX];
 	if (!m_body)
 	{
 		return false;
 	}
 
-	result = m_body->Initialize(device, "Resources/Model/sack.txt");
+	result = m_body[MODEL_IDLE].Initialize(device, "Resources/Model/Player/sack_normal.txt");
 	if (!result)
 	{
 		return false;
 	}
 
-	m_body->LoadColorMap(device, deviceContext, "Resources/Texture/sackColor.tga");
-	m_body->LoadBumpMap(device, deviceContext, "Resources/Texture/sackNormal.tga");
+	result = m_body[MODEL_SQUASH].Initialize(device, "Resources/Model/Player/sack_squash.txt");
+	if (!result)
+	{
+		return false;
+	}
+
+	result = m_body[MODEL_FALL].Initialize(device, "Resources/Model/Player/sack_stretch_down.txt");
+	if (!result)
+	{
+		return false;
+	}
+
+	result = m_body[MODEL_JUMP].Initialize(device, "Resources/Model/Player/sack_stretch_up.txt");
+	if (!result)
+	{
+		return false;
+	}
+
+	//*********************//
+	// 　アニメ付きのモデル  //
+	//*********************//
+	m_animBody = new CModelAnimation;
+	if (!m_animBody)
+	{
+		return false;
+	}
+
+	m_animBody->Initialize(device, &m_body[MODEL_IDLE]);
+	if (!result)
+	{
+		return false;
+	}
 
 	//****************//
 	// 　蹴鞠のフック	  //
@@ -124,23 +155,84 @@ bool CSackBase::InitializeObject(ID3D11Device* device, ID3D11DeviceContext* devi
 		return false;
 	}
 
+	//****************//
+	//   　蹴鞠の紐    //
+	//****************//
+
+	if (m_rope)
+	{
+		result = m_rope->InitializeObject(device, deviceContext);
+		if (!result)
+		{
+			return false;
+		}
+	}
+
+	//****************//
+	// 　テクスチャ	  //
+	//****************//
+
+	m_colorTexture = new CTexture;
+	if (!m_colorTexture)
+	{
+		return false;
+	}
+
+	result = m_colorTexture->Initialize(device, deviceContext, "Resources/Texture/sackColor.tga");
+	if (!result)
+	{
+		return false;
+	}
+
+	m_bumpTexture = new CTexture;
+	if (!m_bumpTexture)
+	{
+		return false;
+	}
+
+	result = m_bumpTexture->Initialize(device, deviceContext, "Resources/Texture/sackNormal.tga");
+	if (!result)
+	{
+		return false;
+	}
 	return true;
 }
 
 void CSackBase::Shutdown(void)
 {
-	if (m_body != nullptr)
+	if (m_colorTexture != nullptr)
 	{
-		m_body->Shutdown();
-		delete m_body;
-		m_body = nullptr;
+		m_colorTexture->Shutdown();
+		delete m_colorTexture;
+		m_colorTexture = nullptr;
 	}
+
+	if (m_bumpTexture != nullptr)
+	{
+		m_bumpTexture->Shutdown();
+		delete m_bumpTexture;
+		m_bumpTexture = nullptr;
+	}
+
+	for (int i = 0; i < MODEL_MAX; i++)
+	{
+		m_body[i].Shutdown();
+	}
+	delete[] m_body;
+	m_body = nullptr;
 
 	if (m_hook != nullptr)
 	{
 		m_hook->Shutdown();
 		delete m_hook;
 		m_hook = nullptr;
+	}
+
+	if (m_rope != nullptr)
+	{
+		m_rope->Shutdown();
+		delete m_rope;
+		m_rope = nullptr;
 	}
 
 	return;
@@ -173,7 +265,8 @@ void CSackBase::Initialize(void)
 
 	m_orientation = { cos(m_initAngle), 0.0f, -sin(m_initAngle) };
 
-	m_matrix = XMMatrixRotationY(m_initAngle);
+	CalculateWorldMatrix(m_matrix, m_orientation.x, m_orientation.y, m_orientation.z);
+	//m_matrix = XMMatrixRotationY(m_initAngle);
 	//D3DXMatrixRotationY(&matrix, initAngle);
 
 	UpdateDisplacement();
@@ -182,8 +275,10 @@ void CSackBase::Initialize(void)
 	//親をヌルにする
 	m_parent = nullptr;
 	m_child = nullptr;
+	
+	m_animBody->SetCurrent(&m_body[MODEL_IDLE]);
 
-//	if (rope != nullptr)	rope->Init(matrix);
+	if (m_rope != nullptr)	m_rope->Initialize(m_matrix);
 }
 
 //==============================================================================
@@ -207,13 +302,13 @@ void CSackBase::Action(void)
 
 	//当たり判定データ更新
 	UpdateHit();
-	/*
-	if (rope != nullptr)
-		rope->Action(matrix);
+	
+	if (m_rope != nullptr)
+		m_rope->Action(m_matrix);
 		
-	if (child_ != nullptr)
-		rope->LockEnd(child_->GetHookPos());
-*/
+	if (m_child != nullptr)
+		m_rope->LockEnd(m_child->GetHookPos());
+
 }
 
 //==============================================================================
@@ -225,7 +320,7 @@ void CSackBase::Action(void)
 //==============================================================================
 void CSackBase::PostAction(void)
 {
-	//if (rope != nullptr) rope->PostAction();
+	if (m_rope != nullptr) m_rope->PostAction();
 	m_state->PostAction(this);
 }
 
@@ -319,24 +414,24 @@ void CSackBase::Pull(void)
 		return;
 	}
 
-	//if (CalculateDistance(position, parent->GetWorldPos()) < ROPE_LENGHT)	return;
+	if (CalculateDistance(m_position, m_parent->GetWorldPos()) < ROPE_LENGHT)	return;
 
-	//switch (hookDir)
-	//{
-	//case SACK_DIR_RIGHT:
-	//	break;
+	switch (m_hookDir)
+	{
+	case SACK_DIR_RIGHT:
+		break;
 
-	//case SACK_DIR_LEFT:
-	//	if (state == SackStateBase::SACK_DASH)
-	//	{
-	//		SetState(SackStateBase::SACK_DASH);
-	//		impulse.x = DASH_FORCE;
-	//		return;
-	//	}
-	//	if (angle > 70.0f && angle < 100.f)	Jump();
-	//	else MoveRight();
-	//	break;
-	//}
+	case SACK_DIR_LEFT:
+		if (state == SackStateBase::SACK_DASH)
+		{
+			SetState(SackStateBase::SACK_DASH);
+			m_impulse.x = DASH_FORCE;
+			return;
+		}
+		if (angle > 70.0f && angle < 100.f)	Jump();
+		else MoveRight();
+		break;
+	}
 
 
 	switch (state)
@@ -396,7 +491,7 @@ void CSackBase::ClearChain(void)
 {
 	if (m_stringDir == SACK_DIR_NONE)	return;
 
-	//parent->rope->ClearLock();
+	m_parent->m_rope->ClearLock();
 	m_parent->m_child = nullptr;
 	m_parent = nullptr;
 }
@@ -574,8 +669,8 @@ float CSackBase::GetRopePullForce(void)
 {
 	if (m_parent == nullptr)
 		return 0;
-	//return parent->rope->GetPullForce();
-	return 0;
+	return m_parent->m_rope->GetPullForce();
+	//return 0;
 }
 
 //==============================================================================
@@ -589,8 +684,8 @@ float CSackBase::GetRopePullAngle(void)
 	if (m_parent == nullptr)
 		return 0;
 
-	//return parent->rope->GetPullAngle();
-	return 0;
+	return m_parent->m_rope->GetPullAngle();
+	//return 0;
 }
 
 //==============================================================================
@@ -681,21 +776,6 @@ void CSackBase::SetState(SackStateBase::SACK_STATE stateName)
 }
 
 //==============================================================================
-//!	@fn		CreateMesh
-//!	@brief　蹴鞠のメッシュを作る関数
-//!	@param	なし
-//!	@retval	なし
-//!	@note	
-//==============================================================================
-void CSackBase::CreateMesh(void)
-{
-	//仮のメッシュの作成
-	//D3DXCreateBox(CDirectXGraphics::GetDXDevice(), SACK_RADIUS * 2, SACK_RADIUS * 2, SACK_RADIUS * 2, &mesh, nullptr);
-	//D3DXCreateSphere(CDirectXGraphics::GetDXDevice(), SACK_RADIUS, 20, 20, &mesh, nullptr);
-
-}
-
-//==============================================================================
 //!	@fn		UpdateDisplacement
 //!	@brief　移動更新
 //!	@param	なし
@@ -707,12 +787,6 @@ void CSackBase::UpdateDisplacement(void)
 	//フレームのスピードを落とす
 	m_position.y += m_impulse.y / 15.0f;
 	m_position.x += m_impulse.x / 15.0f;
-
-	//マトリックスの更新
-	m_positionX = m_position.x;
-	m_positionY = m_position.y;
-	m_positionZ = m_position.z;
-
 }
 
 
@@ -803,6 +877,12 @@ XMFLOAT3 CSackBase::GetHookPos(void)
 	XMStoreFloat4x4(&hookMatTemp, hookMatrix);
 
 	return{ hookMatTemp._41, hookMatTemp._42, hookMatTemp._43 };
+}
+
+
+void CSackBase::StartAnimation(SACK_MODELS modelName, int nFrames)
+{
+	m_animBody->SetTarget(&m_body[modelName], nFrames);
 }
 //******************************************************************************
 //	End of file.

@@ -14,7 +14,7 @@
 //# include "Debug.h"
 # include "Macros.h"
 # include "HitManager.h"
-# include "ShaderManagerClass.h"
+# include "ShaderManager.h"
 
 # include "PlayerClass.h"
 # include "SackBaseClass.h"
@@ -60,7 +60,7 @@ CPlayer::CPlayer(float posX, float posY) : CSackBase(posX, posY, GAMEOBJTYPE::GO
 	//“–‚½‚è”»’è
 //	hitCenter	= new CHit_Sphere(PLAYER_RADIUS, GAMEHIT_TYPE::HIT_PLAYER, this);
 
-	//rope = new CRope(D3DXVECTOR3( 0, SACK_RADIUS, 2 ));
+	m_rope = new CRope(XMFLOAT3( 0, SACK_RADIUS, 2 ));
 	m_hookDir = SACK_DIR_NONE;
 	m_state = new PlayerState();
 }
@@ -121,6 +121,7 @@ void CPlayer::Action(void)
 
 	//Œü‚¢‚Ä‚¢‚é•ûŒü‚ÌXV
 	UpdateRotation();
+	m_animBody->InterpolateModels();
 
 	CSackBase::Action();
 }
@@ -154,14 +155,15 @@ void CPlayer::Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, X
 		return;
 
 	CalculateWorldMatrix(m_matrix, m_quaternion);
-	m_body->Render(deviceContext);
-	CShaderManager::getInstance().RenderTextureShader(deviceContext, m_body->GetIndexCount(), m_matrix, viewMatrix, projectionMatrix, m_body->GetColorTexture());
-	m_hook->Render(deviceContext);
-	CShaderManager::getInstance().RenderColorShader(deviceContext, m_hook->GetIndexCount(), m_matrix, viewMatrix, projectionMatrix, XMFLOAT4(1.0f,1.0f,0.0f,1.0f));
-
-	//if (rope != nullptr) rope->Render();
+	
+	m_body->Render(deviceContext,m_animBody->GetVertexBuffer(deviceContext));
+	CShaderManager::getInstance().RenderTextureShader(deviceContext, m_body->GetIndexCount(), m_matrix, viewMatrix, projectionMatrix, m_colorTexture->GetTextureData());
+	//m_hook->Render(deviceContext);
+	//CShaderManager::getInstance().RenderColorShader(deviceContext, m_hook->GetIndexCount(), m_matrix, viewMatrix, projectionMatrix, XMFLOAT4(1.0f,1.0f,0.0f,1.0f));
+	
+	m_rope->Render(deviceContext,m_matrix,viewMatrix,projectionMatrix);
+	//if (m_rope != nullptr) m_rope->Render();
 	//RenderDebug();
-	//C3DObject::Render();
 
 	/*
 	if (CDebug::displayAxis && !CDebug::GetIsHidden())

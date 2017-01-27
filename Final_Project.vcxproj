@@ -142,9 +142,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BeadsClass.h" />
     <ClInclude Include="BumpMapShaderClass.h" />
     <ClInclude Include="CameraClass.h" />
     <ClInclude Include="BlockClass.h" />
+    <ClInclude Include="ModelAnimationClass.h" />
     <ClInclude Include="PlayerClass.h" />
     <ClInclude Include="DashingStateBase.h" />
     <ClInclude Include="FallingStateBase.h" />
@@ -162,6 +164,7 @@
     <ClInclude Include="P_MoveState.h" />
     <ClInclude Include="P_NormalState.h" />
     <ClInclude Include="PlayerState.h" />
+    <ClInclude Include="RopeClass.h" />
     <ClInclude Include="SackBaseClass.h" />
     <ClInclude Include="HitBaseClass.h" />
     <ClInclude Include="HitBoxClass.h" />
@@ -184,7 +187,7 @@
     <ClInclude Include="PositionClass.h" />
     <ClInclude Include="SceneHeaders.h" />
     <ClInclude Include="SceneManager.h" />
-    <ClInclude Include="ShaderManagerClass.h" />
+    <ClInclude Include="ShaderManager.h" />
     <ClInclude Include="SystemClass.h" />
     <ClInclude Include="TextureClass.h" />
     <ClInclude Include="TextureShaderClass.h" />
@@ -192,9 +195,11 @@
     <ClInclude Include="TitleScene.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BeadsClass.cpp" />
     <ClCompile Include="BumpMapShaderClass.cpp" />
     <ClCompile Include="CameraClass.cpp" />
     <ClCompile Include="BlockClass.cpp" />
+    <ClCompile Include="ModelAnimationClass.cpp" />
     <ClCompile Include="PlayerClass.cpp" />
     <ClCompile Include="DashingStateBase.cpp" />
     <ClCompile Include="FallingStateBase.cpp" />
@@ -216,6 +221,7 @@
     <ClCompile Include="P_MidairState.cpp" />
     <ClCompile Include="P_MoveState.cpp" />
     <ClCompile Include="P_NormalState.cpp" />
+    <ClCompile Include="RopeClass.cpp" />
     <ClCompile Include="SackBaseClass.cpp" />
     <ClCompile Include="SackStateBase.cpp" />
     <ClCompile Include="StageClass.cpp" />
@@ -230,7 +236,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PositionClass.cpp" />
     <ClCompile Include="SceneManager.cpp" />
-    <ClCompile Include="ShaderManagerClass.cpp" />
+    <ClCompile Include="ShaderManager.cpp" />
     <ClCompile Include="SystemClass.cpp" />
     <ClCompile Include="TextureClass.cpp" />
     <ClCompile Include="TextureShaderClass.cpp" />

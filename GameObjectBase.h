@@ -100,14 +100,8 @@ protected:
 	XMFLOAT3			m_worldPos;
 	XMFLOAT3			m_localPos;
 	
-
-	float m_positionX;
-	float m_positionY;
-	float m_positionZ;
-
-	float m_rotationX;
-	float m_rotationY;
-	float m_rotationZ;
+	XMFLOAT3 m_position;
+	XMFLOAT3 m_rotation;
 
 public:
 

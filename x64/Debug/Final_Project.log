@@ -1,3 +1,5 @@
-﻿  PlayerClass.cpp
+﻿  ModelAnimationClass.cpp
+c:\users\ohs45019\documents\hal\就職作品\final_project\modelanimationclass.cpp(77): warning C4101: 'modelVertexNo': unreferenced local variable
+c:\users\ohs45019\documents\hal\就職作品\final_project\modelanimationclass.cpp(114): warning C4101: 'vertexData': unreferenced local variable
   Final_Project.vcxproj -> C:\Users\ohs45019\Documents\HAL\就職作品\Final_Project\x64\Debug\Final_Project.exe
   Final_Project.vcxproj -> C:\Users\ohs45019\Documents\HAL\就職作品\Final_Project\x64\Debug\Final_Project.pdb (Full PDB)

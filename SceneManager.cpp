@@ -11,7 +11,7 @@
 # include "TitleScene.h"
 # include "GameScene.h"
 # include "GameClearScene.h"
-# include "ShaderManagerClass.h"
+# include "ShaderManager.h"
 
 //# include "GameObjectsList.h"
 //# include "input.h"

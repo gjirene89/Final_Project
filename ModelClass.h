@@ -54,26 +54,30 @@ public:
 	void Shutdown(void);
 
 	void Render(ID3D11DeviceContext* deviceContext);// , XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix);
+	void Render(ID3D11DeviceContext* deviceContext, ID3D11Buffer* vertexBuffer);
 
-	bool LoadColorMap(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* textureFilename);
-	bool LoadColorMap(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* textureFilename, int vRepeat, int uRepeat);
-	bool LoadBumpMap(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* bumpMapFilename);
-	bool LoadBumpMap(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* bumpMapFilename, int vRepeat, int uRepeat);
-	bool LoadSpecMap(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* specMapFilename);
-	bool LoadSpecMap(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* specMapFilename, int vRepeat, int uRepeat);
+	void InterpolateModels(ModelType* startModel, ModelType* targetModel, int currTime, int endTime);
+
+
+	//bool LoadColorMap(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* textureFilename);
+	//bool LoadColorMap(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* textureFilename, int vRepeat, int uRepeat);
+	//bool LoadBumpMap(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* bumpMapFilename);
+	//bool LoadBumpMap(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* bumpMapFilename, int vRepeat, int uRepeat);
+	//bool LoadSpecMap(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* specMapFilename);
+	//bool LoadSpecMap(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* specMapFilename, int vRepeat, int uRepeat);
 
 	//--------------
 	//    éÊìæä÷êî
 	//--------------
 
-	CTexture::TextureData GetColorTexture(void);
-	CTexture::TextureData GetBumpTexture(void);
-	CTexture::TextureData GetSpecTexture(void);
+	//CTexture::TextureData GetColorTexture(void);
+	//CTexture::TextureData GetBumpTexture(void);
+	//CTexture::TextureData GetSpecTexture(void);
 
 	int GetVertexCount(void);
 	int GetIndexCount(void);
-
-	//ModelType* GetModelType(void) { return m_model; };
+	
+	ModelType* GetModelType(void) { return m_model; };
 
 private:
 	bool InitializeBuffers(ID3D11Device* device);
@@ -81,7 +85,7 @@ private:
 	void RenderBuffersIndex(ID3D11DeviceContext* deviceContext);
 	void RenderBuffersIndex(ID3D11DeviceContext* deviceContext, ID3D11Buffer* vertexBuffer);
 
-	void ReleaseTexture(void);
+	//void ReleaseTexture(void);
 
 	bool LoadModel(char* filename);
 	void ReleaseModel(void);
@@ -96,9 +100,9 @@ private:
 
 	ModelType* m_model;
 
-	CTexture* m_Texture;
-	CTexture* m_BumpMap;
-	CTexture* m_SpecMap;
+	//CTexture* m_Texture;
+	//CTexture* m_BumpMap;
+	//CTexture* m_SpecMap;
 
 };
 

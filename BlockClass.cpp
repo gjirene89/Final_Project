@@ -8,7 +8,7 @@
 //		インクルード
 //==============================================================================
 # include "BlockClass.h"
-# include "ShaderManagerClass.h"
+# include "ShaderManager.h"
 # include "MathUtility.h"
 //# include "CDirectxGraphics.h"
 
@@ -25,6 +25,9 @@ CBlock::CBlock(BLOCK_COLOR color) : CGameObjectBase(GOBJ_BLOCK)
 	//メッシュの作成
 	//D3DXCreateBox(CDirectXGraphics::GetDXDevice(), BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE*2, &mesh, nullptr);
 	m_model = nullptr;
+
+	m_colorTexture = nullptr;
+	m_bumpTexture = nullptr;
 
 	//色初期化
 	//m_color = color;
@@ -54,6 +57,10 @@ bool CBlock::InitializeObject(ID3D11Device* device, ID3D11DeviceContext* deviceC
 {
 	bool result;
 
+	//****************//
+	// 　モデル		  //
+	//****************//
+
 	m_model = new CModel;
 	if (!m_model)
 	{
@@ -66,15 +73,59 @@ bool CBlock::InitializeObject(ID3D11Device* device, ID3D11DeviceContext* deviceC
 		return false;
 	}
 
-	m_model->LoadColorMap(device, deviceContext, "Resources/Texture/blockColor.tga");
-	m_model->LoadBumpMap(device, deviceContext, "Resources/Texture/blockBump.tga");
+	//****************//
+	// 　テクスチャ	  //
+	//****************//
+
+	m_colorTexture = new CTexture();
+	if (!m_colorTexture)
+	{
+		return false;
+	}
+
+	result = m_colorTexture->Initialize(device, deviceContext, "Resources/Texture/blockColor.tga");
+	if (!result)
+	{
+		return false;
+	}
+
+	m_bumpTexture = new CTexture();
+	if (!m_bumpTexture)
+	{
+		return false;
+	}
+
+	result = m_bumpTexture->Initialize(device, deviceContext, "Resources/Texture/blockNormal.tga");
+	if (!result)
+	{
+		return false;
+	}
 
 	return true;
 }
 
 void CBlock::Shutdown()
 {
-	m_model->Shutdown();
+	if (m_bumpTexture)
+	{
+		m_bumpTexture->Shutdown();
+		delete m_bumpTexture;
+		m_bumpTexture = nullptr;
+	}
+
+	if (m_colorTexture)
+	{
+		m_colorTexture->Shutdown();
+		delete m_colorTexture;
+		m_colorTexture = nullptr;
+	}
+
+	if (m_model)
+	{
+		m_model->Shutdown();
+		delete m_model;
+		m_model = nullptr;
+	}
 
 	return;
 }
@@ -86,10 +137,10 @@ void  CBlock::Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, X
 
 	//TranslateMatrix(worldMatrix, XMFLOAT3(m_positionX, m_positionY, m_positionZ));
 
-	CalculateWorldMatrix(worldMatrix, m_rotationX, m_rotationY, m_rotationZ);
+	CalculateWorldMatrix(worldMatrix, m_rotation.x, m_rotation.y, m_rotation.z);
 	m_model->Render(deviceContext);// , worldMatrix, viewMatrix, projectionMatrix);
 								   //CShaderManager::getInstance().RenderBumpMapShader(deviceContext, m_model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_model->GetColorTexture(), m_model->GetBumpTexture(), );
-	CShaderManager::getInstance().RenderTextureShader(deviceContext, m_model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_model->GetColorTexture());
+	CShaderManager::getInstance().RenderTextureShader(deviceContext, m_model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, m_colorTexture->GetTextureData());
 	//CShaderManager::getInstance().RenderColorShader(deviceContext, m_model->GetIndexCount(), worldMatrix, viewMatrix, projectionMatrix, XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));
 
 	return;

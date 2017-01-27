@@ -14,6 +14,7 @@
 # include "GameObjectBase.h"
 # include "Macros.h"
 # include "ModelClass.h"
+# include "TextureClass.h"
 
 //==============================================================================
 //	マクロ定数
@@ -54,6 +55,9 @@ private:
 	//BLOCK_COLOR m_color;
 	XMFLOAT4 m_color;
 	CModel* m_model;
+
+	CTexture* m_colorTexture;
+	CTexture* m_bumpTexture;
 
 	void SetColor(BLOCK_COLOR color);	//ブロックの色を変える関数
 

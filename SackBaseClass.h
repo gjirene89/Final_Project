@@ -14,12 +14,15 @@
 # include "SackStateBase.h"
 # include "HitBaseClass.h"
 # include "ModelClass.h"
+# include "RopeClass.h"
+# include "TextureClass.h"
+# include "ModelAnimationClass.h"
+
 //# include "CXFile.h"
 //# include "CDebugFont.h"
 //# include "HitManager.h"
 //# include "Macros.h"
 //# include "Debug.h"
-//# include "CRope.h"
 //# include "ModelManager.h"
 //# include "TextureManager.h"
 
@@ -28,13 +31,13 @@
 //==============================================================================
 # define LOOK_ANGLE	(-30.0f * XM_PI / 180.0f)
 
-
 //==============================================================================
 //	クラス名		CSacksBase
 //==============================================================================
 class CSackBase : public CGameObjectBase
 {
 public:
+	
 	//プレイヤーの向き
 	enum SACK_DIR
 	{
@@ -43,6 +46,15 @@ public:
 		SACK_DIR_NONE
 	};
 
+	//蹴鞠のモデル名
+	enum SACK_MODELS {
+		MODEL_IDLE,
+		MODEL_SQUASH,
+		MODEL_JUMP,
+		MODEL_FALL,
+
+		MODEL_MAX
+	};
 
 	//あたり判定
 	CHit_Base	*m_hitCenter;						//中心
@@ -93,6 +105,7 @@ public:
 	void SetImpulseX(float impulseX);				//X軸の弾みをセットする
 	void SetImpulseY(float impulseX);				//Y軸の弾みをセットする
 	void SetState(SackStateBase::SACK_STATE stateName);		//状態をセットする
+	void StartAnimation(SACK_MODELS modelName, int nFrames);
 
 protected:
 
@@ -100,17 +113,22 @@ protected:
 
 	static CModel* m_body;
 	static CModel* m_hook;
+	
+	CModelAnimation* m_animBody;
+
+
+	static CTexture* m_colorTexture;
+	static CTexture* m_bumpTexture;
 
 	int            m_noId;
 	char           m_nameId[256];
 
 
-	//CRope *rope;
+	CRope*		   m_rope;
 	SackStateBase* m_state;
 
 	//位置
 	XMFLOAT3		m_initPosition;		//初期位置
-	XMFLOAT3		m_position;			//現在位置
 	XMFLOAT3		m_oldPosition;		//前フレームの位置
 
 	float			m_initAngle;		//初期向いている方向
@@ -124,11 +142,16 @@ protected:
 	SACK_DIR		m_hookDir;			//フックの向き
 	CSackBase*      m_parent;			//つながっている蹴鞠
 
+	int				m_frames;
+
+	SACK_MODELS		m_currModel;
+	SACK_MODELS		m_nextModel;
+
+protected:
 	CSackBase(float posX, float posY, GAMEOBJTYPE gObj);	//コンストラクタ
 	bool InitializeObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 	void Shutdown(void);
 
-	void CreateMesh(void);				//メッシュの生成関数
 	void UpdateDisplacement(void);		//位置を更新する
 	void UpdateHit(void);				//あたり判定の更新関数
 	void ClearChain(void);

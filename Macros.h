@@ -35,6 +35,6 @@
 # define SPRING_COEFFICIENT (13.0f)
 # define BEAD_LENGHT		(0.50f)
 # define BEAD_RADIUS		(1.0f)
-# define BEAD_MASS			(0.5f)
+# define BEAD_MASS			(1.0f)
 # define BEAD_SIZE			(1.0f)
 # define BEAD_NO			(5)

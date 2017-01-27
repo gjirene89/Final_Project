@@ -17,9 +17,6 @@ CModel::CModel()
 
 	m_model = 0;
 
-	m_Texture = 0;
-	m_BumpMap = 0;
-	m_SpecMap = 0;
 }
 //==============================================================================
 //  関数名		 Initialize	
@@ -62,7 +59,7 @@ bool CModel::Initialize(ID3D11Device* device, char* modelFilename)
 //==============================================================================
 void CModel::Shutdown()
 {
-	ReleaseTexture();
+	//ReleaseTexture();
 	ShutdownBuffers();
 	ReleaseModel();
 
@@ -82,11 +79,9 @@ void CModel::Render(ID3D11DeviceContext* deviceContext)//, XMMATRIX worldMatrix,
 {
 
 	RenderBuffersIndex(deviceContext);
-	//CShaderManager::getInstance().RenderColorShader(deviceContext, m_indexCount, worldMatrix, viewMatrix, projectionMatrix, XMFLOAT4(0.1f,1.0f,0.0f,1.0f));
-	//	CShaderManager::getInstance().RenderTextureShader(deviceContext, m_indexCount, worldMatrix, viewMatrix, projectionMatrix, m_Texture->GetTextureData());
 	return;
 }
-/*
+
 //==============================================================================
 //  関数名        Render
 //  説明          モデルの描画関数
@@ -97,13 +92,12 @@ void CModel::Render(ID3D11DeviceContext* deviceContext)//, XMMATRIX worldMatrix,
 //	戻り値
 //          なし
 //==============================================================================
-void CGameObjectBase::Render(ID3D11DeviceContext* deviceContext, ID3D11Buffer* vertexBuffer)
+void CModel::Render(ID3D11DeviceContext* deviceContext, ID3D11Buffer* vertexBuffer)
 {
-RenderBuffersIndex(deviceContext, vertexBuffer);
+	RenderBuffersIndex(deviceContext, vertexBuffer);
 
-return;
+	return;
 }
-*/
 
 //==============================================================================
 //  関数名         GetVertexCount
@@ -131,48 +125,6 @@ int CModel::GetVertexCount()
 int CModel::GetIndexCount()
 {
 	return m_indexCount;
-}
-
-//==============================================================================
-//  関数名        GetColorTexture
-//  説明          Colorテクスチャのポインタを戻す関数
-//------------------------------------------------------------------------------
-//	引数
-//          なし
-//	戻り値
-//			ID3D11ShaderResourceView    colorTexture       テクスチャへのポインタ
-//==============================================================================
-CTexture::TextureData CModel::GetColorTexture()
-{
-	return m_Texture->GetTextureData();
-}
-
-//==============================================================================
-//  関数名        GetBumpTexture
-//  説明          Bumpマップのポインタを戻す関数
-//------------------------------------------------------------------------------
-//	引数
-//          なし
-//	戻り値
-//			ID3D11ShaderResourceView    bumpTexture         バンプマップへのポインタ
-//==============================================================================
-CTexture::TextureData CModel::GetBumpTexture()
-{
-	return m_BumpMap->GetTextureData();
-}
-
-//==============================================================================
-//  関数名        GetSpecTexture
-//  説明          鏡面マップのポインタを戻す関数
-//------------------------------------------------------------------------------
-//	引数
-//          なし
-//	戻り値
-//			ID3D11ShaderResourceView    specularMap          鏡面マップへのポインタ
-//==============================================================================
-CTexture::TextureData CModel::GetSpecTexture()
-{
-	return m_SpecMap->GetTextureData();
 }
 
 //==============================================================================
@@ -328,233 +280,6 @@ void CModel::RenderBuffersIndex(ID3D11DeviceContext* deviceContext, ID3D11Buffer
 	return;
 }
 
-//==============================================================================
-//  関数名        LoadColorMap
-//  説明          テクスチャデータのロード関数
-//------------------------------------------------------------------------------
-//	引数
-//          ID3D11Device*           device           デバイスへのポインタ
-//          ID3D11DeviceContext*    deviceContext    デバイスコンテキストへのポインタ
-//          char*                   filename     　　ファイルへのポインタ
-//	戻り値
-//			bool	true 成功　　　false 失敗
-//==============================================================================
-bool CModel::LoadColorMap(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename)
-{
-	bool result;
-
-	m_Texture = new CTexture;
-	if (!m_Texture)
-	{
-		return false;
-	}
-
-	result = m_Texture->Initialize(device, deviceContext, filename);
-	if (!result)
-	{
-		return false;
-	}
-
-	return true;
-}
-
-//==============================================================================
-//  関数名        LoadColorMap
-//  説明          テクスチャデータのロード関数
-//------------------------------------------------------------------------------
-//	引数
-//          ID3D11Device*           device           デバイスへのポインタ
-//          ID3D11DeviceContext*    deviceContext    デバイスコンテキストへのポインタ
-//          char*                   filename     　　ファイルへのポインタ
-//          int                     uRepeat          テクスチャのu座標の繰り返し
-//          int                     vRepeat          テクスチャのV座標の繰り返し
-//	戻り値
-//			bool	true 成功　　　false 失敗
-//==============================================================================
-bool CModel::LoadColorMap(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename, int uRepeat, int vRepeat)
-{
-	bool result;
-
-	m_Texture = new CTexture;
-	if (!m_Texture)
-	{
-		return false;
-	}
-
-	result = m_Texture->Initialize(device, deviceContext, filename);
-	if (!result)
-	{
-		return false;
-	}
-
-	m_Texture->SetUVRepeat(uRepeat, vRepeat);
-
-	return true;
-}
-
-//==============================================================================
-//  関数名        LoadBumpMap
-//  説明          バンプマップのロード関数
-//------------------------------------------------------------------------------
-//	引数
-//          ID3D11Device*           device           デバイスへのポインタ
-//          ID3D11DeviceContext*    deviceContext    デバイスコンテキストへのポインタ
-//          char*                   filename     　　ファイルへのポインタ
-//	戻り値
-//			bool	true 成功　　　false 失敗
-//==============================================================================
-bool CModel::LoadBumpMap(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename)
-{
-	bool result;
-
-	m_BumpMap = new CTexture;
-	if (!m_BumpMap)
-	{
-		return false;
-	}
-
-	result = m_BumpMap->Initialize(device, deviceContext, filename);
-	if (!result)
-	{
-		return false;
-	}
-
-	return true;
-}
-
-//==============================================================================
-//  関数名        LoadBumpMap
-//  説明          バンプマップのロード関数
-//------------------------------------------------------------------------------
-//	引数
-//          ID3D11Device*           device           デバイスへのポインタ
-//          ID3D11DeviceContext*    deviceContext    デバイスコンテキストへのポインタ
-//          char*                   filename     　　ファイルへのポインタ
-//          int                     uRepeat          テクスチャのu座標の繰り返し
-//          int                     vRepeat          テクスチャのV座標の繰り返し
-//	戻り値
-//			bool	true 成功　　　false 失敗
-//==============================================================================
-bool CModel::LoadBumpMap(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename, int uRepeat, int vRepeat)
-{
-	bool result;
-
-	m_BumpMap = new CTexture;
-	if (!m_BumpMap)
-	{
-		return false;
-	}
-
-	result = m_BumpMap->Initialize(device, deviceContext, filename);
-	if (!result)
-	{
-		return false;
-	}
-
-	m_Texture->SetUVRepeat(uRepeat, vRepeat);
-
-	return true;
-}
-
-
-//==============================================================================
-//  関数名        LoadSpecMap
-//  説明			 鏡面マップのロード関数
-//------------------------------------------------------------------------------
-//	引数
-//          ID3D11Device*           device           デバイスへのポインタ
-//          ID3D11DeviceContext*    deviceContext    デバイスコンテキストへのポインタ
-//          char*                   filename     　　ファイルへのポインタ
-//	戻り値
-//			bool	true 成功　　　false 失敗
-//==============================================================================
-bool CModel::LoadSpecMap(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename)
-{
-	bool result;
-
-	m_SpecMap = new CTexture;
-	if (!m_SpecMap)
-	{
-		return false;
-	}
-
-	result = m_SpecMap->Initialize(device, deviceContext, filename);
-	if (!result)
-	{
-		return false;
-	}
-
-	return true;
-}
-
-//==============================================================================
-//  関数名        LoadSpecMap
-//  説明			 鏡面マップのロード関数
-//------------------------------------------------------------------------------
-//	引数
-//          ID3D11Device*           device           デバイスへのポインタ
-//          ID3D11DeviceContext*    deviceContext    デバイスコンテキストへのポインタ
-//          char*                   filename     　　ファイルへのポインタ
-//          int                     uRepeat          テクスチャのu座標の繰り返し
-//          int                     vRepeat          テクスチャのV座標の繰り返し
-//	戻り値
-//			bool	true 成功　　　false 失敗
-//==============================================================================
-bool CModel::LoadSpecMap(ID3D11Device* device, ID3D11DeviceContext* deviceContext, char* filename, int uRepeat, int vRepeat)
-{
-	bool result;
-
-	m_SpecMap = new CTexture;
-	if (!m_SpecMap)
-	{
-		return false;
-	}
-
-	result = m_SpecMap->Initialize(device, deviceContext, filename);
-	if (!result)
-	{
-		return false;
-	}
-
-	m_Texture->SetUVRepeat(uRepeat, vRepeat);
-
-	return true;
-}
-
-//==============================================================================
-//  関数名        ReleaseTexture
-//  説明          テクスチャデータを解放する関数
-//------------------------------------------------------------------------------
-//	引数
-//          なし
-//	戻り値
-//          なし
-//==============================================================================
-void CModel::ReleaseTexture()
-{
-	if (m_Texture)
-	{
-		m_Texture->Shutdown();
-		delete m_Texture;
-		m_Texture = 0;
-	}
-
-	if (m_BumpMap)
-	{
-		m_BumpMap->Shutdown();
-		delete m_BumpMap;
-		m_BumpMap = 0;
-	}
-
-	if (m_SpecMap)
-	{
-		m_SpecMap->Shutdown();
-		delete m_SpecMap;
-		m_SpecMap = 0;
-	}
-
-	return;
-}
 
 //==============================================================================
 //  関数名        LoadModel
