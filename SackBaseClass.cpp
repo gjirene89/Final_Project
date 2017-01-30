@@ -100,7 +100,7 @@ bool CSackBase::InitializeObject(ID3D11Device* device, ID3D11DeviceContext* devi
 		return false;
 	}
 
-	result = m_body[MODEL_IDLE].Initialize(device, "Resources/Model/Player/sack_normal.txt");
+	result = m_body[MODEL_NORMAL].Initialize(device, "Resources/Model/Player/sack_normal.txt");
 	if (!result)
 	{
 		return false;
@@ -112,18 +112,41 @@ bool CSackBase::InitializeObject(ID3D11Device* device, ID3D11DeviceContext* devi
 		return false;
 	}
 
-	result = m_body[MODEL_FALL].Initialize(device, "Resources/Model/Player/sack_stretch_down.txt");
+	result = m_body[MODEL_JUMP].Initialize(device, "Resources/Model/Player/sack_stretch_jump.txt");
 	if (!result)
 	{
 		return false;
 	}
 
-	result = m_body[MODEL_JUMP].Initialize(device, "Resources/Model/Player/sack_stretch_up.txt");
+	result = m_body[MODEL_MOVE_JUMP].Initialize(device, "Resources/Model/Player/sack_stretch_jump.txt");
 	if (!result)
 	{
 		return false;
 	}
 
+	result = m_body[MODEL_MOVE_FALL].Initialize(device, "Resources/Model/Player/sack_stretch_land.txt");
+	if (!result)
+	{
+		return false;
+	}
+
+	result = m_body[MODEL_DASH].Initialize(device, "Resources/Model/Player/sack_dash_stretch.txt");
+	if (!result)
+	{
+		return false;
+	}
+
+	result = m_body[MODEL_IMPACT_FRONT].Initialize(device, "Resources/Model/Player/sack_squash_front.txt");
+	if (!result)
+	{
+		return false;
+	}
+
+	result = m_body[MODEL_IMPACT_UP].Initialize(device, "Resources/Model/Player/sack_squash_up.txt");
+	if (!result)
+	{
+		return false;
+	}
 	//*********************//
 	// 　アニメ付きのモデル  //
 	//*********************//
@@ -133,7 +156,7 @@ bool CSackBase::InitializeObject(ID3D11Device* device, ID3D11DeviceContext* devi
 		return false;
 	}
 
-	m_animBody->Initialize(device, &m_body[MODEL_IDLE]);
+	m_animBody->Initialize(device, &m_body[MODEL_NORMAL]);
 	if (!result)
 	{
 		return false;
@@ -276,7 +299,7 @@ void CSackBase::Initialize(void)
 	m_parent = nullptr;
 	m_child = nullptr;
 	
-	m_animBody->SetCurrent(&m_body[MODEL_IDLE]);
+	m_animBody->SetCurrent(&m_body[MODEL_NORMAL]);
 
 	if (m_rope != nullptr)	m_rope->Initialize(m_matrix);
 }

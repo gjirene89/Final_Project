@@ -13,11 +13,6 @@
 # include "GameClearScene.h"
 # include "ShaderManager.h"
 
-//# include "GameObjectsList.h"
-//# include "input.h"
-//# include "C2DObject.h"
-//# include "TextureManager.h"
-
 //=======================================================================//
 //		ƒOƒ[ƒoƒ‹•Ï”
 //=======================================================================//
@@ -119,6 +114,7 @@ void CScene::Input(CInput* input)
 bool CScene::Render()
 {
 	XMMATRIX worldMatrix, viewMatrix, projectionMatrix;
+	XMFLOAT3 cameraPosition;
 	CGameObjectBase* tempObj;
 
 	m_Direct3D->BeginScene(0.0f, 0.0f, 0.0f, 1.0f);
@@ -129,10 +125,12 @@ bool CScene::Render()
 	m_Direct3D->GetWorldMatrix(worldMatrix);
 	m_Direct3D->GetProjectionMatrix(projectionMatrix);
 
+	cameraPosition = m_Camera->GetPosition();
+
 	tempObj = objArray;
 	while (tempObj)
 	{
-		tempObj->Render(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix);
+		tempObj->Render(m_Direct3D->GetDeviceContext(), worldMatrix, viewMatrix, projectionMatrix, cameraPosition, m_Light);
 		tempObj = tempObj->GetNextObj();
 	}
 
@@ -287,6 +285,18 @@ void CScene::ShutdownSceneObjects(void)
 		nextObj = objArray->GetNextObj();
 		delete objArray;
 		objArray = nextObj;
+	}
+
+	if (m_Camera)
+	{
+		delete m_Camera;
+		m_Camera = nullptr;
+	}
+
+	if (m_Light)
+	{
+		delete m_Light;
+		m_Light = nullptr;
 	}
 }
 

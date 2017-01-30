@@ -29,7 +29,7 @@ public:
 	void Initialize	(void);						//‰Šú‰»ŠÖ”
 	void Input		(CInput* input);						//“ü—ÍŠÖ”
 	void Action		(void);						//ˆ—ŠÖ”
-	void Render		(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix);
+	void Render		(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, XMFLOAT3 cameraPosition, CLight* light);
 	void PostAction	(void);						//Œãˆ—ŠÖ”
 
 	void MoveRight	(void);						//‰E‚ÖˆÚ“®

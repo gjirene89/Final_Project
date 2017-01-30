@@ -48,7 +48,7 @@ public:
 	bool InitializeObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
 	void Shutdown();
 
-	void Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix); //ï`âÊä÷êî
+	void Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, XMFLOAT3 cameraPosition, CLight* light); //ï`âÊä÷êî
 	
 private:
 

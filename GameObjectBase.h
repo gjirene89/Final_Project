@@ -14,6 +14,7 @@
 #include <DirectXMath.h>
 #include <fstream>
 # include "InputClass.h"
+# include "LightClass.h"
 
 using namespace std;
 using namespace DirectX;
@@ -66,8 +67,7 @@ public:
 	virtual bool InitializeObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext) = 0;
 	virtual void Shutdown() = 0;
 
-	virtual void Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix)=0;
-	//virtual void Render(ID3D11DeviceContext* deviceContext, ID3D11Buffer* vertexBuffer);
+	virtual void Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, XMFLOAT3 cameraPosition, CLight* light)=0;
 
 	virtual void Initialize(void);
 	virtual void Input(CInput* input);
@@ -97,16 +97,16 @@ protected:
 	CGameObjectBase*	m_pNextObj;						//次のオブジェクトへのポインタ
 
 	XMMATRIX			m_matrix;
-	XMFLOAT3			m_worldPos;
-	XMFLOAT3			m_localPos;
+	//XMFLOAT3			m_worldPos;
+	//XMFLOAT3			m_localPos;
 	
 	XMFLOAT3 m_position;
 	XMFLOAT3 m_rotation;
 
 public:
 
-	XMFLOAT3 GetLocalPos() { return m_localPos; };
-	XMFLOAT3 GetWorldPos() { return m_worldPos; };
+	//XMFLOAT3 GetLocalPos() { return m_localPos; };
+	XMFLOAT3 GetWorldPos();// { return m_worldPos; };
 	XMMATRIX GetMatrix() { return m_matrix; };
 
 	XMFLOAT3 GetRotX(void);

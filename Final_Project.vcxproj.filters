@@ -216,6 +216,12 @@
     <ClInclude Include="ModelAnimationClass.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="LightClass.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="SpecularShaderClass.h">
+      <Filter>Header Files\ShaderClass</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -359,6 +365,12 @@
     <ClCompile Include="ModelAnimationClass.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="LightClass.cpp">
+      <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="SpecularShaderClass.cpp">
+      <Filter>Source Files\ShaderClass</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shader\Color.ps">
@@ -377,6 +389,12 @@
       <Filter>Shader Files</Filter>
     </None>
     <None Include="Resources\Shader\BumpMap.vs">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="Resources\Shader\Specular.ps">
+      <Filter>Shader Files</Filter>
+    </None>
+    <None Include="Resources\Shader\Specular.vs">
       <Filter>Shader Files</Filter>
     </None>
   </ItemGroup>

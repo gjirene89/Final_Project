@@ -177,7 +177,7 @@ void CStage::Initialize(void)
 //!	@retval	Ç»Çµ
 //!	@note	
 //==============================================================================
-void  CStage::Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix)
+void  CStage::Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, XMFLOAT3 cameraPosition, CLight* light)
 {
 	//ÉuÉçÉbÉNÇï`âÊÇ∑ÇÈ
 	for (int block_h = 0; block_h < MAX_BLOCKS_H; block_h++)
@@ -191,7 +191,7 @@ void  CStage::Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, X
 			PosY = (int)((MAX_BLOCKS_H - 1 - block_h) * BLOCK_SIZE + BLOCK_SIZE / 2.0f);
 
 			stage[block_h][block_w]->SetPosition(PosX, PosY, 0.0f);
-			stage[block_h][block_w]->Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
+			stage[block_h][block_w]->Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix, cameraPosition, light);
 		}
 }
 

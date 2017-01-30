@@ -82,7 +82,7 @@ void CRope::Initialize(XMMATRIX parent)
 	
 }
 
-void CRope::Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix)
+void CRope::Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, XMFLOAT3 cameraPosition, CLight* light)
 
 {
 	//C3DObject::Render();
@@ -92,7 +92,7 @@ void CRope::Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMM
 
 	//äeïîï™ÇÃï`âÊä÷êî
 	for (int seg = 0; seg < BEAD_NO; seg++)
-		m_beads[seg].Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix);
+		m_beads[seg].Render(deviceContext, worldMatrix, viewMatrix, projectionMatrix, cameraPosition, light);
 
 }
 

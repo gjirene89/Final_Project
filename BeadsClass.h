@@ -34,7 +34,7 @@ public:
 
 	virtual void Initialize(XMMATRIX& parent);							//初期化関数
 	virtual void Action(XMMATRIX& parent);							//処理関数
-	virtual void Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix);							//描画関数
+	virtual void Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, XMFLOAT3 cameraPosition, CLight* light);							//描画関数
 	virtual void PostAction(void);						//後処理関数
 
 	bool InitializeObject(ID3D11Device* device, ID3D11DeviceContext* deviceContext);
@@ -73,7 +73,6 @@ private:
 	static CModel* m_beadModel;			//玉のモデル
 
 	void CalcResForce(void);			//合力を求める関数
-	void CreateMesh(void);				//メッシュの生成
 	void SetHit(void);					//当たり判定の情報をセットする
 
 };

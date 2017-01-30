@@ -35,7 +35,7 @@ public:
 	~CRope(void);						//デストラクタ
 
 	void Initialize(XMMATRIX parent);
-	void Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix);
+	void Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, XMFLOAT3 cameraPosition, CLight* light);
 	void Action(XMMATRIX parent);
 	void PostAction(void);
 

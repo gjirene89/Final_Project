@@ -19,11 +19,11 @@ CShaderManager::CShaderManager()
 {
 	m_ColorShader = 0;
 	m_TextureShader = 0;
+	m_SpecularShader = 0;
 
 	/*
 	m_BumpMapShader = 0;
 	m_ClothShader = 0;
-	m_SpecularShader = 0;
 	m_ShadowShader = 0;
 	m_DepthShader = 0;
 	m_VerticalBlurShader = 0;
@@ -112,6 +112,24 @@ bool CShaderManager::Initialize(ID3D11Device* device, HWND hwnd)
 		MessageBox(hwnd, L"Could not initialize the texture shader object.", L"Error", MB_OK);
 		return false;
 	}
+
+	//----------------------------
+	//　　Specularシェーダー生成
+	//----------------------------
+	m_SpecularShader = new CSpecularShader;
+	if (!m_SpecularShader)
+	{
+		return false;
+	}
+
+	result = m_SpecularShader->Initialize(device, hwnd);
+	if (!result)
+	{
+		MessageBox(hwnd, L"Could not initialize the specular shader object.", L"Error", MB_OK);
+		return false;
+	}
+
+
 /*
 	//----------------------------
 	//　　BumpMapシェーダー生成
@@ -145,22 +163,6 @@ bool CShaderManager::Initialize(ID3D11Device* device, HWND hwnd)
 		return false;
 	}
 
-	//----------------------------
-	//　　Clothシェーダー生成
-	//----------------------------
-	m_SpecularShader = new CSpecularShader;
-	if (!m_SpecularShader)
-	{
-		return false;
-	}
-
-	result = m_SpecularShader->Initialize(device, hwnd);
-	if (!result)
-	{
-		MessageBox(hwnd, L"Could not initialize the specular shader object.", L"Error", MB_OK);
-		return false;
-	}
-	
 	//----------------------------
 	//　　Shadowシェーダー生成
 	//----------------------------
@@ -259,6 +261,13 @@ bool CShaderManager::Initialize(ID3D11Device* device, HWND hwnd)
 //==============================================================================
 void CShaderManager::Shutdown()
 {
+	if (m_SpecularShader)
+	{
+		m_SpecularShader->Shutdown();
+		delete m_SpecularShader;
+		m_SpecularShader = 0;
+	}
+
 	if (m_TextureShader)
 	{
 		m_TextureShader->Shutdown();
@@ -323,12 +332,7 @@ void CShaderManager::Shutdown()
 		m_BumpMapShader = 0;
 	}
 	
-	if (m_SpecularShader)
-	{
-		m_SpecularShader->Shutdown();
-		delete m_SpecularShader;
-		m_SpecularShader = 0;
-	}
+
 
 	*/
 	return;
@@ -425,7 +429,7 @@ bool CShaderManager::RenderBumpMapShader(ID3D11DeviceContext* deviceContext, int
 }
 
 
-/*
+
 //==============================================================================
 //  関数名		 RenderSpecularShader	
 //  説明			 鏡面の描画関数
@@ -461,7 +465,7 @@ bool CShaderManager::RenderSpecularShader(ID3D11DeviceContext* deviceContext, in
 	
 	return true;
 }
-
+/*
 //==============================================================================
 //  関数名        RenderClothShader	
 //  説明	          Clothシェーダーの描画関数

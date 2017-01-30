@@ -48,10 +48,14 @@ public:
 
 	//R‹f‚Ìƒ‚ƒfƒ‹–¼
 	enum SACK_MODELS {
-		MODEL_IDLE,
+		MODEL_NORMAL,
 		MODEL_SQUASH,
 		MODEL_JUMP,
-		MODEL_FALL,
+		MODEL_MOVE_JUMP,
+		MODEL_MOVE_FALL,
+		MODEL_DASH,
+		MODEL_IMPACT_FRONT,
+		MODEL_IMPACT_UP,
 
 		MODEL_MAX
 	};
@@ -74,7 +78,7 @@ public:
 	virtual void Initialize(void);							//‰Šú‰»ŠÖ”
 	virtual void Action(void);							//ˆ—ŠÖ”
 	virtual void Input(CInput* input){};							//“ü—ÍŠÖ”
-	virtual void Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix)=0;							//•`‰æŠÖ”
+	virtual void Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, XMFLOAT3 cameraPosition, CLight* light)=0;							//•`‰æŠÖ”
 	virtual void PostAction(void);						//Œãˆ—ŠÖ”
 
 	virtual void MoveRight(void);						//‰E‚ÖˆÚ“®

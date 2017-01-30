@@ -34,8 +34,6 @@ CModel* CBeads::m_beadModel = nullptr;
 //==============================================================================
 CBeads::CBeads(void) : CGameObjectBase(GOBJ_BEAD)
 {
-	CreateMesh();
-
 	m_gravForce = 0;
 
 	m_isAngleLocked = false;
@@ -87,17 +85,6 @@ void CBeads::Initialize(XMMATRIX& parent)
 }
 
 //==============================================================================
-//!	@fn		CreateMesh
-//!	@brief	玉のメッシュー生成
-//!	@param	なし
-//!	@retval	なし
-//==============================================================================
-void CBeads::CreateMesh(void)
-{
-	//D3DXCreateSphere(CDirectXGraphics::GetDXDevice(), BEAD_RADIUS, 8, 8, &mesh, nullptr);
-}
-
-//==============================================================================
 //!	@fn		SetHit
 //!	@brief	当たり判定の情報を更新する
 //!	@param	なし
@@ -116,7 +103,7 @@ void CBeads::SetHit(void)
 //!	@retval	なし
 //!	@note	
 //==============================================================================
-void CBeads::Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix)
+void CBeads::Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, XMFLOAT3 cameraPosition, CLight* light)
 {
 	//C3DObject::Render();
 
@@ -126,6 +113,12 @@ void CBeads::Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XM
 //	worldMatrix = worldMatrix * m_matrix;
 	m_beadModel->Render(deviceContext);
 	CShaderManager::getInstance().RenderColorShader(deviceContext, m_beadModel->GetIndexCount(), m_matrix, viewMatrix, projectionMatrix, XMFLOAT4(1.0, 0.0, 0.0, 1.0));
+	//CShaderManager::getInstance().RenderSpecularShader(deviceContext, m_beadModel->GetIndexCount(),
+	//	m_matrix, viewMatrix, projectionMatrix,
+	//	COLOR, light->GetDirection(), light->GetAmbientColor(), light->GetDiffuseColor(),
+	//	cameraPosition,
+	//	light->GetSpecularColor(), light->GetSpecularPower());
+
 }
 
 //==============================================================================

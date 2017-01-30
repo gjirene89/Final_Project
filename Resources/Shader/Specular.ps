@@ -1,0 +1,80 @@
+//************************************************************************//
+//	Specular Pixel Shader
+//	2016-11-25
+//	Irene Gersenowies
+//************************************************************************//
+
+//=======================================================================//
+//		グローバル変数
+//=======================================================================//
+Texture2D colorTexture : register (t0);
+SamplerState SampleType;
+
+cbuffer LightBuffer
+{
+	float4 ambientColor;
+	float4 diffuseColor;
+	float3 lightDirection;
+	float specularPower;	
+	float4 specularColor;
+};
+
+//=======================================================================//
+//		TypeDef
+//=======================================================================//
+struct PixelInputType
+{
+	float4 position : SV_POSITION;
+	float2 tex : TEXCOORD0;
+	float3 normal : NORMAL;
+	float3 viewDirection : TEXCOORD1;
+};
+
+//=======================================================================//
+//		Specular Pixel Shader
+//=======================================================================//
+float4 SpecularPixelShader(PixelInputType input) : SV_TARGET
+{
+	float4 textureColor;
+	float3 lightDir;
+	float lightIntensity;
+	float4 color;
+	float3 reflection;
+	float4 specular;
+
+	//テクスチャからピクセル色を取得する
+    textureColor = colorTexture.Sample(SampleType, input.tex);
+
+	//計算のため、光の向きを反転する
+    lightDir = -lightDirection;
+	lightDir = normalize(lightDir);
+
+	//光の量を法線マップによる計算する
+    lightIntensity = saturate(dot(input.normal, lightDir));
+
+	//環境色設定
+	color = ambientColor;
+
+	
+	if(lightIntensity > 0.0f)
+	{
+		//光による色を追加
+		color+= diffuseColor * lightIntensity;
+		color = saturate(color);
+
+		//反射角度を求める
+		reflection = normalize(2 * lightIntensity * input.normal - lightDir);
+
+		//鏡面度を求める
+		specular = pow(saturate(dot(reflection, input.viewDirection)),specularPower);
+
+	}
+
+	//色に加える
+	color = color * textureColor;
+	color = saturate(color + specular);
+
+
+    return color;
+}
+

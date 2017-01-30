@@ -1,5 +1,49 @@
-﻿  ModelAnimationClass.cpp
-c:\users\ohs45019\documents\hal\就職作品\final_project\modelanimationclass.cpp(77): warning C4101: 'modelVertexNo': unreferenced local variable
-c:\users\ohs45019\documents\hal\就職作品\final_project\modelanimationclass.cpp(114): warning C4101: 'vertexData': unreferenced local variable
+﻿  main.cpp
+  TitleScene.cpp
+c:\users\ohs45019\documents\hal\就職作品\final_project\titlescene.cpp(79): warning C4101: 'result': unreferenced local variable
+  SystemClass.cpp
+  StageClass.cpp
+c:\users\ohs45019\documents\hal\就職作品\final_project\stageclass.cpp(190): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\ohs45019\documents\hal\就職作品\final_project\stageclass.cpp(191): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+c:\users\ohs45019\documents\hal\就職作品\final_project\stageclass.cpp(237): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\ohs45019\documents\hal\就職作品\final_project\stageclass.cpp(238): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\ohs45019\documents\hal\就職作品\final_project\stageclass.cpp(258): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+c:\users\ohs45019\documents\hal\就職作品\final_project\stageclass.cpp(259): warning C4244: 'initializing': conversion from 'float' to 'int', possible loss of data
+  SceneManager.cpp
+  SackBaseClass.cpp
+  RopeClass.cpp
+  PlayerState.cpp
+  PlayerClass.cpp
+  P_NormalState.cpp
+  P_MoveState.cpp
+  P_MidairState.cpp
+  P_JumpingState.cpp
+  P_FlipState.cpp
+  P_FallingState.cpp
+  P_DashingState.cpp
+  NormalStateBase.cpp
+  MoveStateBase.cpp
+  MidairStateBase.cpp
+  JumpingStateBase.cpp
+  Generating Code...
+  Compiling...
+  HitSphereClass.cpp
+  HitManager.cpp
+  HitBoxClass.cpp
+  HitBaseClass.cpp
+  GameScene.cpp
+  GameObjectBase.cpp
+c:\users\ohs45019\documents\hal\就職作品\final_project\gameobjectbase.cpp(220): warning C4101: 'roll': unreferenced local variable
+c:\users\ohs45019\documents\hal\就職作品\final_project\gameobjectbase.cpp(220): warning C4101: 'pitch': unreferenced local variable
+c:\users\ohs45019\documents\hal\就職作品\final_project\gameobjectbase.cpp(220): warning C4101: 'yaw': unreferenced local variable
+  FallingStateBase.cpp
+  DashingStateBase.cpp
+  BlockClass.cpp
+  BeadsClass.cpp
+  Generating Code...
+  Compiling...
+  GameClearScene.cpp
+c:\users\ohs45019\documents\hal\就職作品\final_project\gameclearscene.cpp(76): warning C4101: 'result': unreferenced local variable
+  Generating Code...
   Final_Project.vcxproj -> C:\Users\ohs45019\Documents\HAL\就職作品\Final_Project\x64\Debug\Final_Project.exe
   Final_Project.vcxproj -> C:\Users\ohs45019\Documents\HAL\就職作品\Final_Project\x64\Debug\Final_Project.pdb (Full PDB)

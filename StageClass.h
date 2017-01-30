@@ -11,8 +11,6 @@
 //		インクルード
 //=============================================================================
 # include "BlockClass.h"
-//# include "C3DObject.h"
-//# include "CDirectxGraphics.h"
 
 //=============================================================================
 //	マクロ定数
@@ -44,7 +42,7 @@ public:
 	void Shutdown();
 
 	void Initialize(void);		//初期化関数
-	void Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix); //描画関数
+	void Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, XMFLOAT3 cameraPosition, CLight* light); //描画関数
 	void Action(void);		//処理関数
 	void PostAction(void);	//後処理関数
 

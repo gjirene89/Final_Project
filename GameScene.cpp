@@ -42,6 +42,15 @@ bool CGameScene::Initialize()
 {
 	m_Camera->SetPosition(50, 50, -50);
 
+	m_Light->SetAmbientColor(0.26f, 0.24f, 0.30f, 1.0f);
+	m_Light->SetDiffuseColor(1.0f, 0.99f, 0.79f, 1.0f);
+	m_Light->SetDirection(-0.25f, -1.0f, 0.5f);
+	m_Light->SetPosition(500.0f, 500.0f, -50.0f);
+	m_Light->SetLookAt(0.0f, 0.0f, 0.0f);
+	m_Light->SetSpecularColor(1.0f, 1.0f, 1.0f, 1.0f);
+	m_Light->SetSpecularPower(30.0f);
+	m_Light->GenerateOrthoMatrix(20.0f, 20.0f, SHADOW_MAP_DEPTH, SHADOW_MAP_NEAR);
+
 	CScene::Initialize();
 
 	return true;
@@ -79,8 +88,15 @@ bool CGameScene::LoadScene(void)
 	CGameObjectBase* tempObj;
 
 	//カメラオブジェクトの生成
-	m_Camera = new CCamera;
+	m_Camera = new CCamera();
 	if (!m_Camera)
+	{
+		return false;
+	}
+
+	//光のオブジェクト生成
+	m_Light = new CLight();
+	if (!m_Light)
 	{
 		return false;
 	}
@@ -101,8 +117,6 @@ bool CGameScene::LoadScene(void)
 		return false;
 	}
 		
-	//objArray->LoadColorMap(m_Direct3D->GetDevice(), m_Direct3D->GetDeviceContext(), "Resources/Texture/sun.tga");
-
 	tempObj = objArray;
 	while (tempObj)
 	{

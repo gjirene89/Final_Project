@@ -287,6 +287,16 @@ XMFLOAT3 CGameObjectBase::GetRotZ()
 	return (XMFLOAT3(tempMat._31, tempMat._32, tempMat._33));
 }
 
+
+XMFLOAT3 CGameObjectBase::GetWorldPos()
+{
+	XMFLOAT4X4 tempMat;
+
+	XMStoreFloat4x4(&tempMat, m_matrix);
+
+	return (XMFLOAT3(tempMat._41, tempMat._42, tempMat._43));
+}
+
 //******************************************************************************
 //	End of file.
 //******************************************************************************

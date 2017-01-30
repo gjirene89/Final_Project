@@ -149,7 +149,7 @@ void CPlayer::PostAction(void)
 //!	@retval	‚È‚µ
 //!	@note	
 //==============================================================================
-void CPlayer::Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix)
+void CPlayer::Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, XMMATRIX viewMatrix, XMMATRIX projectionMatrix, XMFLOAT3 cameraPosition, CLight* light)
 {
 	if (!m_body)
 		return;
@@ -157,11 +157,17 @@ void CPlayer::Render(ID3D11DeviceContext* deviceContext, XMMATRIX worldMatrix, X
 	CalculateWorldMatrix(m_matrix, m_quaternion);
 	
 	m_body->Render(deviceContext,m_animBody->GetVertexBuffer(deviceContext));
-	CShaderManager::getInstance().RenderTextureShader(deviceContext, m_body->GetIndexCount(), m_matrix, viewMatrix, projectionMatrix, m_colorTexture->GetTextureData());
-	//m_hook->Render(deviceContext);
-	//CShaderManager::getInstance().RenderColorShader(deviceContext, m_hook->GetIndexCount(), m_matrix, viewMatrix, projectionMatrix, XMFLOAT4(1.0f,1.0f,0.0f,1.0f));
+	//CShaderManager::getInstance().RenderTextureShader(deviceContext, m_body->GetIndexCount(), m_matrix, viewMatrix, projectionMatrix, m_colorTexture->GetTextureData());
 	
-	m_rope->Render(deviceContext,m_matrix,viewMatrix,projectionMatrix);
+	CShaderManager::getInstance().RenderSpecularShader(deviceContext, m_body->GetIndexCount(), 
+		m_matrix, viewMatrix, projectionMatrix, 
+		m_colorTexture->GetTextureData(),light->GetDirection(), light->GetAmbientColor(), light->GetDiffuseColor(),
+		cameraPosition, light->GetSpecularColor(), light->GetSpecularPower());
+
+	//m_hook->Render(deviceContext);
+	//CShaderManager::getInstance().RenderSpecularShader(deviceContext, m_hook->GetIndexCount(), m_matrix, viewMatrix, projectionMatrix, XMFLOAT4(1.0f,1.0f,0.0f,1.0f));
+	
+	m_rope->Render(deviceContext,m_matrix,viewMatrix,projectionMatrix, cameraPosition, light);
 	//if (m_rope != nullptr) m_rope->Render();
 	//RenderDebug();
 

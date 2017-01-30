@@ -146,6 +146,7 @@
     <ClInclude Include="BumpMapShaderClass.h" />
     <ClInclude Include="CameraClass.h" />
     <ClInclude Include="BlockClass.h" />
+    <ClInclude Include="LightClass.h" />
     <ClInclude Include="ModelAnimationClass.h" />
     <ClInclude Include="PlayerClass.h" />
     <ClInclude Include="DashingStateBase.h" />
@@ -173,6 +174,7 @@
     <ClInclude Include="CPUClass.h" />
     <ClInclude Include="SackStateBase.h" />
     <ClInclude Include="SackStateBaseHeaders.h" />
+    <ClInclude Include="SpecularShaderClass.h" />
     <ClInclude Include="StageClass.h" />
     <ClInclude Include="Macros.h" />
     <ClInclude Include="MathUtility.h" />
@@ -199,6 +201,7 @@
     <ClCompile Include="BumpMapShaderClass.cpp" />
     <ClCompile Include="CameraClass.cpp" />
     <ClCompile Include="BlockClass.cpp" />
+    <ClCompile Include="LightClass.cpp" />
     <ClCompile Include="ModelAnimationClass.cpp" />
     <ClCompile Include="PlayerClass.cpp" />
     <ClCompile Include="DashingStateBase.cpp" />
@@ -224,6 +227,7 @@
     <ClCompile Include="RopeClass.cpp" />
     <ClCompile Include="SackBaseClass.cpp" />
     <ClCompile Include="SackStateBase.cpp" />
+    <ClCompile Include="SpecularShaderClass.cpp" />
     <ClCompile Include="StageClass.cpp" />
     <ClCompile Include="MathUtility.cpp" />
     <ClCompile Include="ModelClass.cpp" />
@@ -248,6 +252,8 @@
     <None Include="Resources\Shader\BumpMap.vs" />
     <None Include="Resources\Shader\Color.ps" />
     <None Include="Resources\Shader\Color.vs" />
+    <None Include="Resources\Shader\Specular.ps" />
+    <None Include="Resources\Shader\Specular.vs" />
     <None Include="Resources\Shader\Texture.ps" />
     <None Include="Resources\Shader\Texture.vs" />
   </ItemGroup>

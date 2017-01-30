@@ -14,6 +14,8 @@
 # include "D3DClass.h"
 # include "CameraClass.h"
 # include "InputClass.h"
+# include "LightClass.h"
+
 
 //=======================================================================//
 //	グローバル変数
@@ -60,15 +62,14 @@ public:
 	virtual CScene* ChangeScene(bool isChange)=0;
 	static CScene* GetScene(SCENE_NAME sceneName);
 	
-	//SCENE_NAME GetSceneName(void) { return sceneName; };
-	
 protected :
-	CScene(void) {};							//コンストラクタ
+	CScene(void) { m_Camera = nullptr; m_Light = nullptr; };							//コンストラクタ
 	CScene(const CScene& other) {};
 	~CScene(void) {};							//デストラクタ
 
 	SCENE_NAME sceneName;
 	CCamera* m_Camera;
+	CLight* m_Light;
 	
 	CGameObjectBase* objArray;
 
