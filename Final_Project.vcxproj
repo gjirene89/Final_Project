@@ -148,6 +148,7 @@
     <ClInclude Include="BlockClass.h" />
     <ClInclude Include="LightClass.h" />
     <ClInclude Include="ModelAnimationClass.h" />
+    <ClInclude Include="PlaneClass.h" />
     <ClInclude Include="PlayerClass.h" />
     <ClInclude Include="DashingStateBase.h" />
     <ClInclude Include="FallingStateBase.h" />
@@ -195,6 +196,7 @@
     <ClInclude Include="TextureShaderClass.h" />
     <ClInclude Include="TimerClass.h" />
     <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="TrackingCameraClass.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BeadsClass.cpp" />
@@ -203,6 +205,7 @@
     <ClCompile Include="BlockClass.cpp" />
     <ClCompile Include="LightClass.cpp" />
     <ClCompile Include="ModelAnimationClass.cpp" />
+    <ClCompile Include="PlaneClass.cpp" />
     <ClCompile Include="PlayerClass.cpp" />
     <ClCompile Include="DashingStateBase.cpp" />
     <ClCompile Include="FallingStateBase.cpp" />
@@ -246,6 +249,7 @@
     <ClCompile Include="TextureShaderClass.cpp" />
     <ClCompile Include="TimerClass.cpp" />
     <ClCompile Include="TitleScene.cpp" />
+    <ClCompile Include="TrackingCameraClass.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Shader\BumpMap.ps" />

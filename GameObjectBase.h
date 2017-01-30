@@ -81,10 +81,10 @@ public:
 	void GetRotation(float& x, float& y, float& z);
 
 	void CalculateWorldMatrix(XMMATRIX& worldMatrix, float rotX, float rotY, float rotZ);
+	void CalculateWorldMatrix(XMMATRIX& worldMatrix, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ);
 	void CalculateWorldMatrix(XMMATRIX& worldMatrix, XMVECTOR quaternion);
 
 	//ポインタ用
-
 	CGameObjectBase* GetNextObj();						//次のオブジェクトのデータを戻す関数
 	void SetNextObj(CGameObjectBase* nextObj);			//次のオブジェクトのポインタをセットする関数
 

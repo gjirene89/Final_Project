@@ -20,7 +20,7 @@
 //==============================================================================
 void NormalState::Enter(CSackBase* player)
 {
-	player->StartAnimation(CSackBase::MODEL_IDLE,5);
+	player->StartAnimation(CSackBase::MODEL_NORMAL,5);
 }
 
 //==============================================================================

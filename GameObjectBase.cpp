@@ -187,9 +187,10 @@ void CGameObjectBase::GetRotation(float& x, float& y, float& z)
 //  説明          ワールド配列を計算する関数
 //------------------------------------------------------------------------------
 //	引数
-//          float&      x            X軸回転
-//          float&      y            Y軸回転
-//          float&      z            Z軸回転
+//          XMMATRIX&  worldMatrix	   ワールド行列
+//          float      rotX            X軸回転
+//          float      rotY            Y軸回転
+//          float      rotZ            Z軸回転
 //	戻り値
 //          なし
 //==============================================================================
@@ -215,6 +216,53 @@ void CGameObjectBase::CalculateWorldMatrix(XMMATRIX& worldMatrix, float rotX, fl
 	return;
 }
 
+//==============================================================================
+//  関数名        CalculateWorldMatrix
+//  説明          ワールド配列を計算する関数
+//------------------------------------------------------------------------------
+//	引数
+//          XMMATRIX&  worldMatrix	   ワールド行列
+//          float      rotX            X軸回転
+//          float      rotY            Y軸回転
+//          float      rotZ            Z軸回転
+//	戻り値
+//          なし
+//==============================================================================
+void CGameObjectBase::CalculateWorldMatrix(XMMATRIX& worldMatrix, float rotX, float rotY, float rotZ, float scaleX, float scaleY, float scaleZ)
+{
+	float yaw, pitch, roll;
+	XMMATRIX translationMatrix, rotationMatrix, scaleMatrix;
+
+	//yaw (Y軸), pitch (X軸), roll (Z軸) をラジアンに変換する
+	pitch = rotX * XM_PI / 180.0f;
+	yaw = rotY * XM_PI / 180.0f;
+	roll = rotZ * XM_PI / 180.0f;
+
+	//yaw, pitch, rollで回転行列を作成する
+	rotationMatrix = XMMatrixRotationRollPitchYaw(pitch, yaw, roll);
+
+	//拡大マトリクス
+	scaleMatrix = XMMatrixScaling(scaleX, scaleY, scaleZ);
+
+	//移動行列
+	translationMatrix = XMMatrixTranslation(m_position.x, m_position.y, m_position.z);
+
+	//ワールド行列を求める
+	worldMatrix = scaleMatrix * rotationMatrix * translationMatrix;
+
+	return;
+}
+
+//==============================================================================
+//  関数名        CalculateWorldMatrix
+//  説明          ワールド配列を計算する関数
+//------------------------------------------------------------------------------
+//	引数
+//          XMMATRIX&  worldMatrix	   ワールド行列
+//          XMVECTOR   quaternion      クオターニオン
+//	戻り値
+//          なし
+//==============================================================================
 void CGameObjectBase::CalculateWorldMatrix(XMMATRIX& worldMatrix, XMVECTOR quaternion)
 {
 	float yaw, pitch, roll;

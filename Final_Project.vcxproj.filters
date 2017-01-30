@@ -61,6 +61,12 @@
     <Filter Include="Source Files\Utility\Manager">
       <UniqueIdentifier>{3fe59147-38c5-46ab-8e79-61031bbd7e7e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Camera">
+      <UniqueIdentifier>{c50f639d-49a5-4724-8125-ef5a9c4b0b18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Camera">
+      <UniqueIdentifier>{a8146fd6-6e6a-4c73-a632-3d6ac0281505}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ColorShaderClass.h">
@@ -80,9 +86,6 @@
     </ClInclude>
     <ClInclude Include="CPUClass.h">
       <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraClass.h">
-      <Filter>Header Files\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="D3DClass.h">
       <Filter>Header Files\Utility</Filter>
@@ -222,6 +225,15 @@
     <ClInclude Include="SpecularShaderClass.h">
       <Filter>Header Files\ShaderClass</Filter>
     </ClInclude>
+    <ClInclude Include="PlaneClass.h">
+      <Filter>Header Files\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraClass.h">
+      <Filter>Header Files\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="TrackingCameraClass.h">
+      <Filter>Header Files\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -229,9 +241,6 @@
     </ClCompile>
     <ClCompile Include="ColorShaderClass.cpp">
       <Filter>Source Files\ShaderClass</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraClass.cpp">
-      <Filter>Source Files\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="GameObjectBase.cpp">
       <Filter>Source Files\GameObject</Filter>
@@ -370,6 +379,15 @@
     </ClCompile>
     <ClCompile Include="SpecularShaderClass.cpp">
       <Filter>Source Files\ShaderClass</Filter>
+    </ClCompile>
+    <ClCompile Include="PlaneClass.cpp">
+      <Filter>Source Files\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraClass.cpp">
+      <Filter>Source Files\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="TrackingCameraClass.cpp">
+      <Filter>Source Files\Camera</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

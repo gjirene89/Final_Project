@@ -41,7 +41,7 @@ CTitleScene::CTitleScene()
 //==============================================================================
 bool CTitleScene::Initialize()
 {
-	m_Camera->SetPosition(150, 50, -200);
+	m_Camera->SetPosition(0,0,-10);
 
 	CScene::Initialize();
 
@@ -77,6 +77,7 @@ CScene* CTitleScene::ChangeScene(bool isChange)
 bool CTitleScene::LoadScene(void)
 {
 	bool result;
+	CGameObjectBase* tempObj;
 
 	//カメラオブジェクトの生成
 	m_Camera = new CCamera;
@@ -85,18 +86,33 @@ bool CTitleScene::LoadScene(void)
 		return false;
 	}
 
-	////オブジェクトの追加
-	//objArray = new CStage();
+	//オブジェクトの追加
+	objArray = new CPlane(10,10);
+	if (!objArray)
+	{
+		return false;
+	}
 
-	//result = objArray->InitializeObject(m_Direct3D->GetDevice(), m_Direct3D->GetDeviceContext());// , "Resources/Model/square.txt");
-	//if (!result)
-	//{
-	//	//error message
-	//	return false;
-	//}
-	////objArray->LoadColorMap(m_Direct3D->GetDevice(), m_Direct3D->GetDeviceContext(), "Resources/Texture/sun.tga");
+	result = ((CPlane*)objArray)->LoadColorTexture(m_Direct3D->GetDevice(), m_Direct3D->GetDeviceContext(), "Resources/Texture/wallColor.tga", 10, 10);
+	if (!result)
+	{
+		return false;
+	}
 
 	
+	//オブジェクトの初期化
+	tempObj = objArray;
+	while (tempObj)
+	{
+		result = tempObj->InitializeObject(m_Direct3D->GetDevice(), m_Direct3D->GetDeviceContext());
+		if (!result)
+		{
+			//error message
+			return false;
+		}
+		tempObj = tempObj->GetNextObj();
+	}
+
 	return true;
 }
 

@@ -88,7 +88,7 @@ bool CGameScene::LoadScene(void)
 	CGameObjectBase* tempObj;
 
 	//カメラオブジェクトの生成
-	m_Camera = new CCamera();
+	m_Camera = new CTrackingCamera();
 	if (!m_Camera)
 	{
 		return false;
@@ -116,6 +116,8 @@ bool CGameScene::LoadScene(void)
 		//error message
 		return false;
 	}
+	
+	((CTrackingCamera*)m_Camera)->SetTarget(tempObj);
 		
 	tempObj = objArray;
 	while (tempObj)

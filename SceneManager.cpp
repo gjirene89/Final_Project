@@ -70,13 +70,16 @@ bool CScene::InitializeSceneManager(int screenWidth, int screenHeight, HWND hwnd
 bool CScene::Initialize()
 {
 	CGameObjectBase* tempObj;
+	
 	tempObj = objArray;
-
 	while (tempObj)
 	{
 		tempObj->Initialize();
 		tempObj = tempObj->GetNextObj();
 	}
+
+	m_Camera->Initialize();
+
 	return true;
 }
 
@@ -151,8 +154,10 @@ bool CScene::Render()
 void CScene::Action()
 {
 	CGameObjectBase* tempObj;
-	tempObj = objArray;
+	
+	m_Camera->Action();
 
+	tempObj = objArray;
 	while (tempObj)
 	{
 		tempObj->Action();

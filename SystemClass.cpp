@@ -10,6 +10,8 @@
 //=======================================================================//
 # define SCREEN_WIDTH 800
 # define SCREEN_HEIGHT 600
+# define DEBUG_MODE (0)
+
 
 # define NAME   L"就職作品"
 # define TITLE  L"AT-13B-607-03 IRENE GERSENOWIES"
@@ -279,6 +281,7 @@ void CSystem::Run()
 	//ゲームループ
 	while (!done)
 	{
+
 		//ウインドウメッセージ
 		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
 		{
@@ -342,10 +345,17 @@ bool CSystem::Frame()
 	}
 	
 	m_Scene->Input(m_Input);
-	m_Scene->Action();
-	m_Scene->Render();
-	m_Scene->PostAction();
 
+#if DEBUG_MODE
+	if (m_Input->IsSpaceTriggered())
+	{
+#endif
+		m_Scene->Action();
+		m_Scene->Render();
+		m_Scene->PostAction();
+#if DEBUG_MODE
+	}
+#endif
 	//入力取得
 	result = HandleInput(m_Timer->GetTime());
 	if (!result)
@@ -356,13 +366,6 @@ bool CSystem::Frame()
 	//Get the view point postion/rotation
 	//m_Position->GetPosition(posX, posY, posZ);
 	//m_Position->GetRotation(rotX, rotY, rotZ);
-		
-	//グラフィック オブジェクトの処理を呼び出す
-	//result = m_Graphics->Frame(m_FPS->GetFps(), m_CPU->GetCpuPercentage(), posX, posY, posZ);
-	if (!result)
-	{
-		return false;
-	}
 
 	return true;
 }

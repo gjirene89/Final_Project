@@ -106,13 +106,13 @@ bool CSackBase::InitializeObject(ID3D11Device* device, ID3D11DeviceContext* devi
 		return false;
 	}
 
-	result = m_body[MODEL_SQUASH].Initialize(device, "Resources/Model/Player/sack_squash.txt");
+	result = m_body[MODEL_SQUASH].Initialize(device, "Resources/Model/Player/sack_squash_down.txt");
 	if (!result)
 	{
 		return false;
 	}
 
-	result = m_body[MODEL_JUMP].Initialize(device, "Resources/Model/Player/sack_stretch_jump.txt");
+	result = m_body[MODEL_JUMP].Initialize(device, "Resources/Model/Player/sack_stretch_up.txt");
 	if (!result)
 	{
 		return false;

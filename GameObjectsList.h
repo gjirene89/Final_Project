@@ -8,8 +8,10 @@
 //		インクルード
 //=======================================================================//
 #include "GameObjectBase.h"
+#include "TrackingCameraClass.h"
 #include "StageClass.h"
 #include "PlayerClass.h"
+#include "PlaneClass.h"
 
 
 //******************************************************************************

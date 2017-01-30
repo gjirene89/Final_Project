@@ -37,6 +37,7 @@ public:
 	void Shutdown(void);
 	bool Frame(void);
 
+	bool IsSpaceTriggered(void);
 	bool IsEnterTriggered(void);
 	bool IsEscapePressed(void);
 	bool IsLeftPressed(void);

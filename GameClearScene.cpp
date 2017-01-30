@@ -74,12 +74,41 @@ CScene* CGameClearScene::ChangeScene(bool isChange)
 bool CGameClearScene::LoadScene(void)
 {
 	bool result;
+	CGameObjectBase* tempObj;
 
 	//カメラオブジェクトの生成
 	m_Camera = new CCamera;
 	if (!m_Camera)
 	{
 		return false;
+	}
+
+	//オブジェクトの追加
+	objArray = new CPlane(10, 10);
+	if (!objArray)
+	{
+		return false;
+	}
+
+	//板ポリのテクスチャ追加
+	result = ((CPlane*)objArray)->LoadColorTexture(m_Direct3D->GetDevice(), m_Direct3D->GetDeviceContext(), "Resources/Texture/wallColor.tga", 10, 10);
+	if (!result)
+	{
+		return false;
+	}
+
+
+	//オブジェクトの初期化
+	tempObj = objArray;
+	while (tempObj)
+	{
+		result = tempObj->InitializeObject(m_Direct3D->GetDevice(), m_Direct3D->GetDeviceContext());
+		if (!result)
+		{
+			//error message
+			return false;
+		}
+		tempObj = tempObj->GetNextObj();
 	}
 
 	return true;

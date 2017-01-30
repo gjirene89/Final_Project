@@ -20,6 +20,8 @@
 //==============================================================================
 void MoveState::Enter(CSackBase* player)
 {
+	player->StartAnimation(CSackBase::MODEL_MOVE_JUMP, 10);
+
 	MidairState::Enter(player);
 
 	/*

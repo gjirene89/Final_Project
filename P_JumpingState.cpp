@@ -22,9 +22,11 @@ void JumpingState::Enter(CSackBase* player)
 	//上に何もなければ、ジャンプ関数を呼び出す
 	if (!HitManager::CheckStage(player->m_hitUp) &&
 		HitManager::CheckHit(player->m_hitUp, GAMEHIT_TYPE::HIT_SACK) == nullptr)
+	{
 		player->Jump();
-
-	MidairState::Enter(player);
+		player->StartAnimation(CSackBase::MODEL_JUMP, 10);
+		MidairState::Enter(player);
+	}
 }
 
 //==============================================================================

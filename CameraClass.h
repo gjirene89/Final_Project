@@ -31,6 +31,8 @@ public:
 	XMFLOAT3 GetPosition();
 	void GetRotation(float& fRotX, float& fRotY, float& fRotZ);
 
+	virtual void Initialize(void);
+	virtual void Action(void);
 	void Render(void);
 	void GetViewMatrix(XMMATRIX& viewMatrix);
 
@@ -40,8 +42,10 @@ public:
 	void RenderBaseViewMatrix(void);
 	void GetBaseViewMatrix(XMMATRIX& viewMatrix);
 
-private:
+
+protected:
 	float m_fPosX, m_fPosY, m_fPosZ;
+	float m_fLookX, m_fLookY, m_fLookZ;
 	float m_fRotX, m_fRotY, m_fRotZ;
 
 	XMMATRIX m_viewMatrix;

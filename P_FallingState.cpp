@@ -19,7 +19,7 @@
 //==============================================================================
 void FallingState::Enter(CSackBase* player)
 {
-	player->StartAnimation(CSackBase::MODEL_FALL,10);
+	player->StartAnimation(CSackBase::MODEL_JUMP,10);
 //	player->SetImpulseX(0);
 }
 
